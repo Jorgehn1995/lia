@@ -169,7 +169,28 @@ require '../../assets/glib/isset.php';
       <br>
 
       <!-- end page title end breadcrumb -->
-      <div class="row">
+      <div class="row" id="inicio">
+        <div class="col-md-12">
+          <div class="card-box" style="padding:0.75em !important;">
+            <div class="inbox-widget nicescroll " style="/*height:300px; overflow-y:scroll;*/">
+              <div class="">
+                <div class="">
+                  <div class="text-center">
+                    <br>
+                    <img src="../../assets/images/nodatafound.png" width="80" height="auto" alt=""><br>
+                    <div id="icon">
+                      <h5 class="text-muted">Selecione un grado para calificar</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div> <!-- end col -->
+      </div>
+      <div class="row" id="contenido" style="display:none;">
         <div class="col-md-6" >
           <div class="col-md-12" id="informacion">
 
@@ -245,7 +266,7 @@ require '../../assets/glib/isset.php';
                       <br>
                       <img src="../../assets/images/nodatafound.png" width="80" height="auto" alt=""><br>
                       <div id="icon">
-                        <h5 class="text-muted">Selecione un grado y una actividad para calificar</h5>
+                        <h5 class="text-muted">Selecione una actividad para calificar</h5>
                       </div>
                     </div>
                   </div>
@@ -349,7 +370,7 @@ function nosearchbox(){
 }
 function plisactividad(){
   $("#opciones").hide(500);
-  console.log("oculto");
+  //console.log("oculto");
   var workbox='<div class=""><div class="text-center"><br><img src="../../assets/images/nodatafound.png" width="80" height="auto" alt=""><br><div id="icon"><h5 class="text-muted">Selecione una actividad para calificar</h5></div></div></div>';
   $("#workbox").html(workbox);
 }
@@ -394,6 +415,7 @@ function cargaralumnos(){
   var actividad=$("#actividades").val();
   if (actividad!="none") {
     var id=$("#loadkey").val()+"-"+actividad;
+    //console.log(id);
     var parametros = {
       "id":id,
     };
@@ -412,7 +434,9 @@ function cargaralumnos(){
       },
       success:  function (response) {
         //console.log(idcuadro+" - "+response);
+        //console.log(response);
         $("#workbox").html(response);
+        console.log($("#workbox").html());
         $("#opciones").show(500);
         swal.close();
         $('body').find(".datagrid").TouchSpin({
@@ -703,6 +727,8 @@ $('body').on("click",".btn-cuadro",function(){
     loadinfo(idlk);
     plisactividad();
     $("#editar").hide(500);
+    $("#inicio").hide(500);
+    $("#contenido").show(500);
   }
 });
 $(document).ready(function(){
