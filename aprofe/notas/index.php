@@ -118,51 +118,6 @@ require '../../assets/glib/isset.php';
       <!-- Page-Title -->
       <br>
       <!-- end page title end breadcrumb -->
-      <div class="row" style="display:none;">
-        <div class="col-md-3">
-          <div class="card-box">
-            <h4 class="m-t-0 m-b-10 header-title"><b>Clase</b></h4>
-            <p class="text-muted nombreclase"><?php echo $_GET['materia'] ?></p>
-          </div>
-        </div>
-        <div class="col-md-2">
-          <div class="card-box">
-            <h3 class="m-t-0 m-b-30 header-title"><b>Bloque</b></h3>
-            <h4 class="m-t-0 m-b-25 header-title"><b class="bloque"><?php echo $_GET['bloque'] ?></b></h4>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card-box">
-            <h4 class="m-t-0 m-b-30 header-title"><b>Seleccionar Grado</b></h4>
-            <select id="grados" class="form-control select2">
-              <option>Grado</option>
-              <?php
-              require '../../conexion/conexion.php';
-              $sql="SELECT * FROM `materias` INNER JOIN `grados` ON materias.idgrado=grados.idgrado WHERE materias.idnombremateria='$idmateria' GROUP BY materias.idgrado, materias.seccion";
-              //$sql="SELECT * FROM `grados` WHERE idcole = '$idcole' order by ciclo";
-              $con=mysqli_query($conexion,$sql);
-
-              while ($cg=mysqli_fetch_array($con)) {
-                $idg=$cg['idgrado'];
-                $grado=$cg['boton'];
-                $ciclo=$cg['ciclo'];
-                $sec=$cg['seccion'];
-                echo "<option value=\"$idmateria-$bloque-$idg-$sec\">$grado $sec</option>";
-                require '../../conexion/cerrar_conexion.php';
-              }
-              ?>
-            </select>
-
-          </div>
-        </div>
-        <div class="col-md-3 hide-phone">
-          <div class="card-box">
-            <h4 class="m-t-0 m-b-30 header-title"><b>Acciones</b></h4>
-            <p class="text-mutex">...</p>
-            <!--<button type="button" class="btn btn-danger  waves-effect waves-light" > Ver PDF </button>-->
-          </div>
-        </div>
-      </div>
       <div class="row">
         <div class="col-md-12">
           <div class="card-box">

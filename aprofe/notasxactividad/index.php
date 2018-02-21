@@ -105,12 +105,36 @@ require '../../assets/glib/isset.php';
   .back-to-top i {
     font-size: 60px;
   }
+  .rounded-circle, .head{
+
+      background: rgba(59,153,156,1);
+      background: -moz-linear-gradient(left, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
+      background: -webkit-gradient(left top, right top, color-stop(0%, rgba(59,153,156,1)), color-stop(100%, rgba(0,177,156,1)));
+      background: -webkit-linear-gradient(left, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
+      background: -o-linear-gradient(left, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
+      background: -ms-linear-gradient(left, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
+      background: linear-gradient(to right, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3b999c', endColorstr='#00b19c', GradientType=1 );
+
+    }
+  .head{
+      width: 100%;
+      height: auto;
+      padding: 2em;
+      /*padding-left: 2em;
+      padding-right: 2em;
+      padding-top: 1em;
+      padding-bottom: 0.3em;*/
+    }
   </style>
 </head>
 
 <body>
 
   <?php include '../lib/menu.php'; ?>
+  <div class="" style="display:none;">
+    <input type="text" id="loadkey" name="" value="">
+  </div>
   <div class="" style="display:none;">
     <?php $idmateria=d("idmateria");
     $bloque=d("bloque");
@@ -121,48 +145,38 @@ require '../../assets/glib/isset.php';
   </div>
 
   <div class="wrapper">
-    <div class="container-fluid">
-
-      <!-- Page-Title -->
+    <div class="head">
       <div class="row">
-        <div class="col-sm-12">
-          <div class="page-title-box">
-            <div class="btn-group pull-right">
-              <ol class="breadcrumb hide-phone p-0 m-0">
-                <li class="breadcrumb-item"><a href="../"><?php echo "$abrcole"; ?></a></li>
-                <li class="breadcrumb-item"><a href="./">Calificaciones</a></li>
-                <li class="breadcrumb-item active">Por Alumno</li>
-              </ol>
-            </div>
-            <h4 class=""><?php echo $_GET['materia']." - Bloque ".$_GET['bloque'] ?></h4>
+        <div class="col-md-12">
+          <h2 class="text-light"><b>Actividades</b> <small><small> > Bloque <?php echo "$bloqueencurso"; ?></small></small> </h2>
+        </div>
+        <div class="col-md-12">
+          <p class="text-light">Califica actividades de forma individual </p>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <button type="button" class="btn btn-outline-light btn-change" name="button">Selecionar Grado</button>
+          </div>
+          <div class="form-group">
+
           </div>
         </div>
       </div>
+    </div>
+    <div class="container-fluid">
+
+      <!-- Page-Title -->
+      <br>
+
       <!-- end page title end breadcrumb -->
       <div class="row">
         <div class="col-md-6">
           <div class="col-md-12">
             <div class="card-box">
-              <h4 class="m-t-0 m-b-0 header-title"><b>Seleccionar Grado</b></h4>
-              <select id="grados" class="form-control select2">
-                <option>Grado</option>
-                <?php
-                require '../../conexion/conexion.php';
-                $sql="SELECT * FROM `materias` INNER JOIN `grados` ON materias.idgrado=grados.idgrado WHERE materias.idnombremateria='$idmateria' GROUP BY materias.idgrado, materias.seccion";
-                //$sql="SELECT * FROM `grados` WHERE idcole = '$idcole' order by ciclo";
-                $con=mysqli_query($conexion,$sql);
+              <h4 class="m-t-0 m-b-0 header-title"><b>Informacion</b></h4>
+              <div class="informacion">
 
-                while ($cg=mysqli_fetch_array($con)) {
-                  $idg=$cg['idgrado'];
-                  $grado=$cg['boton'];
-                  $ciclo=$cg['ciclo'];
-                  $sec=$cg['seccion'];
-                  echo "<option value=\"$idmateria-$bloque-$idg-$sec\">$grado $sec</option>";
-                  require '../../conexion/cerrar_conexion.php';
-                }
-                ?>
-              </select>
-
+              </div>
             </div>
           </div>
           <div class="col-md-12" id="selectactividades">
@@ -260,7 +274,49 @@ require '../../assets/glib/isset.php';
   </a>
 </div>
 <!-- end wrapper -->
+<div id="change" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Seleccionar Cuadro</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row" >
+          <div class="col-md-12">
+            <div class="form-group" id="divstBloques">
 
+            </div>
+          </div>
+        </div>
+        <div class="row" >
+          <div class="col-md-12">
+            <div class="form-group" id="divstGrados">
+              <label class="control-label" for="">Selecione un grado</label>
+              <select class="select2 form-control" name="">
+                <option value="none">Grados</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row" >
+          <div class="col-md-12">
+            <div class="form-group" id="divstMaterias">
+              <label class="control-label" for="">Selecione una materia</label>
+              <select class="select2 form-control" name="">
+                <option value="none">Materias</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-success waves-effect waves-light btn-cuadro">Mostrar Cuadro</button>
+      </div>
+    </div>
+  </div>
+</div><!-- /.modal -->
 
 <!-- Footer -->
 <?php
@@ -302,8 +358,11 @@ function plisactividad(){
   var workbox='<div class=""><div class="text-center"><br><img src="../../assets/images/nodatafound.png" width="80" height="auto" alt=""><br><div id="icon"><h5 class="text-muted">Selecione una actividad para calificar</h5></div></div></div>';
   $("#workbox").html(workbox);
 }
-function selectactividades(){
-  var id=$("#grados").val();
+function selectactividades(idact){
+  if (idact==null) {
+    swal("Seleccione un Grado", "Seleccione un grado para poder continuar", "error");
+  }
+  var id=idact;
   var parametros = {
     "id":id,
   };
@@ -339,7 +398,7 @@ function cargarnombre(){
 function cargaralumnos(){
   var actividad=$("#actividades").val();
   if (actividad!="none") {
-    var id=$("#grados").val()+"-"+actividad;
+    var id=$("#loadkey").val()+"-"+actividad;
     var parametros = {
       "id":id,
     };
@@ -373,6 +432,147 @@ function cargaralumnos(){
     });
   }
 
+}
+function selectmateriasinit(){
+  //var idmateria=vars['idmateria'];
+  var loadkey=vars['loadkey'];
+  if (loadkey==null) {
+    idmateria="";
+  }else {
+    var lk=loadkey.split("-");
+    var idmateria=lk[0];
+  }
+  if (idmateria==null) {
+    idmateria="";
+  }
+  var idgrado=vars['idgrado'];
+  var sec=vars['sec'];
+  if (idgrado==null || sec==null) {
+    ig=$("#stGrados").val();
+    idg=ig.split("-");
+    idgrado=idg[0];
+    sec=idg[1];
+    //console.log(sec);
+  }
+  var stMaterias = {
+    "idgrado":idgrado,
+    "sec":sec,
+    "idmateria":idmateria
+  };
+  $.ajax({
+    url:"stMaterias.php",
+    data: stMaterias,
+    type:  'POST',
+    beforeSend: function (){
+      $("#divstMaterias").html(loadicon());
+    },
+    success: function(response){
+      //console.log(response);
+      $("#divstMaterias").html(response);
+      $("#stMaterias").select2();
+      nosearchbox();
+    },
+  });
+}
+function selectgrado(){
+  var loadkey=vars['loadkey'];
+  if (loadkey==null) {
+    idgrado="";
+    sec="";
+  }else {
+    var lk=loadkey.split("-");
+    var idgrado=lk[2];
+    var sec = lk[3];
+  }
+  if (idgrado==null || sec==null) {
+    idgrado="";
+    sec="";
+  }
+  var stGrados = {
+    "idgrado":idgrado,
+    "sec":sec
+  };
+  $.ajax({
+    url:"stGrados.php",
+    data: stGrados,
+    type:  'POST',
+    beforeSend: function (){
+      $("#divstGrados").html(loadicon());
+    },
+    success: function(response){
+      $("#divstGrados").html(response);
+      $("#stGrados").select2();
+      selectmateriasinit()
+      nosearchbox();
+    },
+  });
+
+}
+function selectbloque(){
+  var bloque=vars['bloque'];
+  var loadkey=vars['loadkey'];
+  if (loadkey==null) {
+    bloque="";
+  }else {
+    var lk=loadkey.split("-");
+    var bloque=lk[1];
+  }
+  if (bloque==null) {
+    bloque="";
+  }
+  var stBloques = {
+    "bloque":bloque
+  };
+  $.ajax({
+    url:"stBloques.php",
+    data: stBloques,
+    type:  'POST',
+    beforeSend: function (){
+      $("#divstBloques").html(loadicon());
+    },
+    success: function(response){
+
+      $("#divstBloques").html(response);
+      $("#stBloques").select2();
+      nosearchbox();
+    },
+  });
+}
+function selectmaterias(){
+  //var idmateria=vars['idmateria'];
+  var loadkey=vars['loadkey'];
+  if (loadkey==null) {
+    idmateria="";
+  }else {
+    var lk=loadkey.split("-");
+    var idmateria=lk[0];
+  }
+  if (idmateria==null) {
+    idmateria="";
+  }
+  var ig=$("#stGrados").val();
+  var idg=ig.split("-");
+  var idgrado=idg[0];
+  var sec=idg[1];
+  var stMaterias = {
+    "idgrado":idgrado,
+    "sec":sec,
+    "idmateria":idmateria
+  };
+  $.ajax({
+    url:"stMaterias.php",
+    data: stMaterias,
+    type:  'POST',
+    beforeSend: function (){
+      $("#divstMaterias").html(loadicon());
+    },
+    success: function(response){
+      //console.log(response);
+      $("#divstMaterias").html(response);
+      $("#stMaterias").select2();
+      nosearchbox();
+    },
+  });
 }
 function setname(){
 
@@ -454,6 +654,9 @@ $('body').on("change","#actividades",function(){
   cargaralumnos();
   cargarnombre();
 });
+$('body').on("click",".btn-change",function(){
+  $("#change").modal().show();
+});
 $('body').on("click",".more",function(){
   $("#editar").toggle(500);
 });
@@ -463,7 +666,29 @@ $('body').on("click",".cerrareditar",function(){
 $('body').on("click",".guardar",function(){
   setname();
 });
+$('body').on("change","#stGrados",function(){
+  selectmaterias();
+});
+$('body').on("click",".btn-cuadro",function(){
+  var idmateria = $('body').find("#stMaterias").val();
+  var idbloque =$('body').find("#stBloques").val();
+  var grado =$('body').find("#stGrados").val();
+  var idlk=idmateria+"-"+idbloque+"-"+grado;
+  $("#loadkey").val(idlk);
+  if (idmateria=="none") {
+    swal("Sin Materias", "Lo sentimos, no impartes materias /n en el grado selecionado", "error");
+  }else {
+    //alert(idlk);
+    $("#change").modal("hide");
+    selectactividades(idlk);
+    plisactividad();
+    $("#editar").hide(500);
+  }
+});
 $(document).ready(function(){
+  selectbloque();
+  selectgrado();
+  nosearchbox();
 
   nosearchbox()
   $("#grados").change(function(){

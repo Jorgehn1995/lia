@@ -79,22 +79,22 @@
 
 
         <li class="has-submenu">
-          <a href="#"><i class=" ti-pencil-alt "></i>Tareas</a>
+          <a href="../notasxactividad/"><i class=" ti-pencil-alt "></i>Tareas</a>
           <ul class="submenu">
-            <li><a href="#">Tareas Virtuales</a></li>
-            <li><a href="#">Calificar Actividad</a></li>
+            <!--<li><a href="# disabled" >Tareas Virtuales</a></li>-->
+            <li><a href="../notasxactividad/">Calificar Actividad</a></li>
           </ul>
         </li>
-        <li class="has-submenu">
+        <!--<li class="has-submenu">
           <a  href="#"><i class=" ti-write "></i>Documentos</a>
-        </li>
+        </li>-->
         <li class="has-submenu">
           <a href="../notas/"><i class=" ti-view-grid "></i>Registros</a>
           <ul class="submenu">
             <li><a href="../notas/">Cuadros de Registro</a></li>
             <li><a href="#">Cuadros de Asesor</a></li>
-            <li><a href="#">Desempeño del alumno</a></li>
-            <li><a href="#">No Promovidos</a></li>
+            <!--<li><a href="#">Desempeño del alumno</a></li>-->
+            <!---<li><a href="#">No Promovidos</a></li>-->
           </ul>
         </li>
 
