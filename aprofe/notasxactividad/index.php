@@ -170,14 +170,9 @@ require '../../assets/glib/isset.php';
 
       <!-- end page title end breadcrumb -->
       <div class="row">
-        <div class="col-md-6">
-          <div class="col-md-12">
-            <div class="card-box">
-              <h4 class="m-t-0 m-b-0 header-title"><b>Informacion</b></h4>
-              <div class="informacion">
+        <div class="col-md-6" >
+          <div class="col-md-12" id="informacion">
 
-              </div>
-            </div>
           </div>
           <div class="col-md-12" id="selectactividades">
 
@@ -431,7 +426,31 @@ function cargaralumnos(){
       timeout:10000
     });
   }
+}
+function loadinfo(idact){
+  if (idact==null) {
+    swal("Seleccione un Grado", "Seleccione un grado para poder continuar", "error");
+  }
+  var id=idact;
+  var parametros = {
+    "id":id,
+  };
+  $.ajax({
+    data:  parametros,
+    url:   'infClase.php',
+    type:  'POST',
+    beforeSend: function () {
 
+    },
+    error: function () {
+      swal("Sin Internet", "No se puede conectar a la base de datos", "error");
+    },
+    success:  function (response) {
+      $("#informacion").html(response);
+
+    },
+    timeout:10000
+  });
 }
 function selectmateriasinit(){
   //var idmateria=vars['idmateria'];
@@ -681,6 +700,7 @@ $('body').on("click",".btn-cuadro",function(){
     //alert(idlk);
     $("#change").modal("hide");
     selectactividades(idlk);
+    loadinfo(idlk);
     plisactividad();
     $("#editar").hide(500);
   }
