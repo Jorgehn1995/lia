@@ -262,7 +262,8 @@
     //alert(type);
     $(".uploadzone").hide(500);
     $("#prevrow").hide(500);
-    var src ="archivos/"+url;
+    var src ="../../archivos/"+url;
+    var docs ="archivos/"+url;
     if (type=="Imagen") {
       fancyimages(src,name);
     }
@@ -270,7 +271,7 @@
       fancyiframe(src,name);
     }
     if (type=="Word" || type=="Excel" || type=="xlxs") {
-      var nurl="https://view.officeapps.live.com/op/view.aspx?src=http://www.inmedcoop.com/aprofe/nube/"+src;
+      var nurl="https://view.officeapps.live.com/op/view.aspx?src=http://www.inmedcoop.com/"+docs;
 
       fancyoffice(nurl,name);
     }

@@ -3,6 +3,8 @@ require('../../assets/fpdf/fpdf.php');
 include '../../assets/datetime.php';
 require '../../assets/glib/isset.php';
 require '../lib/sesion.php';
+setlocale(LC_ALL, 'es_GT');
+date_default_timezone_set("America/Guatemala");
 //$mes=date("m");
 /* Inicio del las variables centrales*/
 
@@ -19,6 +21,23 @@ $sql2="SELECT * FROM `grados` WHERE idgrado='$idgrado' LIMIT 1";
 $query2=mysqli_query($conexion,$sql2);
 while ($a=mysqli_fetch_array($query2)) {
 	$nombregrado=$a['boton'];
+}
+
+//$pagesize="h";
+$pagesize=d("size");
+if ($pagesize=="") {
+	$pagesize="v";
+}
+if ($pagesize=="v") {
+	$modo="P";
+	$rest=160;
+	$alto=6;
+	$anchonombre=60;
+}else {
+	$modo="L";
+	$rest=280;
+	$alto=5;
+	$anchonombre=80;
 }
 
 $fecha=d("f");	//fecha de la consulta
@@ -45,17 +64,17 @@ function dias_mes($mes, $anio)
   else
   {
     //Lo hacemos a mi manera.
-    return date("d",mktime(0,0,0,$mes+1,0,$anio));
+    return date("d",mktime(0,0,0,$mes,0,$anio));
   }
 }
 class PDF extends FPDF{
 	function Header(){
-		global $uniqid, $table, $mes, $nombregrado, $seccion,$logobn,$abrcole;
+		global $uniqid, $table, $mes, $nombregrado, $seccion,$logobn,$abrcole,$rest;
 		$this->SetTextColor(0,0,0);
-		$this->Image($logobn,10,8,9,10,'JPG');
+		$this->Image($logobn,15,15,9,10,'JPG');
 		$this->SetFont("Helvetica","",14);
 		$this->Cell(10,8,"",0,0,'R');
-		$this->Cell(30,8,utf8_decode($abrcole),0,0,'L');
+		$this->Cell(20,8,utf8_decode($abrcole),0,0,'L');
 		$this->SetFont("Helvetica","B",8);
 		$this->Cell(40,4,'Mes de Asistencia: ',0,0,'R');
 		$this->Cell(30,4,'Grado:',0,0,'R');
@@ -63,22 +82,23 @@ class PDF extends FPDF{
 		$this->Cell(20,4,'Pag # ',0,0,'R');
 		$this->Ln(4);
 		$mesarray=array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre");
-		$this->Cell(80,8,"",0,0,'R');
+		$this->Cell(60,8,"",0,0,'R');
 		$this->Cell(30,4,$mesarray[$mes-1],0,0,'L');
 		$this->Cell(55,4,utf8_decode($nombregrado),0,0,'L');
 		$this->Cell(20,4,"$seccion",0,0,'L');
 		$this->Cell(10,4,$this->PageNo().'/{nb}',0,0,'L');
 		$this->Ln(1);
 		$this->SetDrawColor(0,0,0);
-		$this->Cell(190,5,"","B",0,'L');
+		$this->Cell(180,5,"","B",0,'L');
 		$this->Ln(10);
 
 	}
 	function recorrer(){
 		$this->SetDrawColor(0,0,0);
 		$this->SetFont("times","",5);
-		global $mes;
-	  $dias= dias_mes($mes, date("Y"));
+		global $mes,$alto,$rest;
+		$dias= dias_mes($mes, date("Y"));
+		$ancho=$rest/$dias;
 	  $dia=array("Lun","Mar","Mie","Jue","Vie","Sab","Dom");
 	  for ($i=1; $i <=$dias ; $i++) {
 	    $date=date("Y")."-$mes-$i";
@@ -88,14 +108,15 @@ class PDF extends FPDF{
 	    }else {
 	      //echo $i." ".$dia[$totaldate-1]."<br>";
 
-				$this->Cell(5,5,$dia[$totaldate-1],1,0,'C');
+				$this->Cell($ancho,5,$dia[$totaldate-1],1,0,'C');
 	    }
 	  }
 	}
 	function cuadro(){
-		global $mes;
+		global $mes,$alto,$rest;
 		$this->SetDrawColor(0,0,0);
 	  $dias= dias_mes($mes, date("Y"));
+		$ancho=$rest/$dias;
 	  $dia=array("Lun","Mar","Mie","Jue","Vie","Sab","Dom");
 	  for ($i=1; $i <=$dias ; $i++) {
 	    $date=date("Y")."-$mes-$i";
@@ -105,13 +126,14 @@ class PDF extends FPDF{
 	    }else {
 	      //echo $i." ".$dia[$totaldate-1]."<br>";
 
-				$this->Cell(5,5,"",1,0,'C');
+				$this->Cell($ancho,$alto,"",1,0,'C');
 	    }
 	  }
 	}
 	function diasmes(){
-		global $mes;
+		global $mes,$alto,$rest;
 	  $dias= dias_mes($mes, date("Y"));
+		$ancho=$rest/$dias;
 	  $dia=array("Lun","Mar","Mie","Jue","Vie","Sab","Dom");
 	  for ($i=1; $i <=$dias ; $i++) {
 	    $date=date("Y")."-$mes-$i";
@@ -121,7 +143,7 @@ class PDF extends FPDF{
 	    }else {
 	      //echo $i." ".$dia[$totaldate-1]."<br>";
 
-				$this->Cell(5,5,$i,1,0,'C');
+				$this->Cell($ancho,5,$i,1,0,'C');
 	    }
 	  }
 	}
@@ -165,10 +187,13 @@ class PDF extends FPDF{
 	}
 }
 
-$pdf= new PDF('P','mm',array(216,330));
+$pdf= new PDF($modo,'mm',array(216,330));
+$pdf->SetMargins(15, 15 , 15);
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->SetDrawColor(0,0,0);
+
+
 $pdf->Cell(190,10,utf8_decode($nombregrado)." ".$seccion,"L",0,'L');
 $pdf->Ln(5);
 $pdf->SetTextColor(70,70,70);
@@ -179,11 +204,11 @@ $pdf->Ln(10);
 $pdf->SetFont("Helvetica","B",7);
 $pdf->SetDrawColor(75,75,75);
 $pdf->Cell(10,10,"Clave",1,0,'L');
-$pdf->Cell(60,10,"Alumno",1,0,'C');
+$pdf->Cell($anchonombre,10,"Alumno",1,0,'C');
 $pdf->recorrer();
 $pdf->Ln(5);
 $pdf->SetFont("Helvetica","B",7);
-$pdf->Cell(70,5,"",0,0,'C');
+$pdf->Cell($anchonombre+10,5,"",0,0,'C');
 $pdf->diasmes();
 $pdf->Ln(5);
 $num=1;
@@ -198,11 +223,11 @@ if ($query->num_rows==0) {
 while ($a=mysqli_fetch_array($query)) {
 	$nombre=utf8_decode($a['apellidos'].", ".$a['nombres']);
 	$pdf->SetFont("Helvetica","B",7.5);
-	$pdf->Cell(10,5,$a['clave'],1,0,'L');
-	$pdf->Cell(60,5,$nombre,1,0,'L');
+	$pdf->Cell(10,$alto,$a['clave'],1,0,'L');
+	$pdf->Cell($anchonombre,$alto,$nombre,1,0,'L');
 
 	$pdf->cuadro();
-	$pdf->Ln(5);
+	$pdf->Ln($alto);
 	$pdf->SetFont("Helvetica","B",7.5);
 	$num++;
 }

@@ -149,6 +149,8 @@ while ($p=mysqli_fetch_array($queryn)) {
 }
 $pdf->Cell(100,10,$pn,0);
 $pdf->Ln(10);
+
+
 $pdf->SetFont("times","BI",11);
 $pdf->Cell(12,32," Clave ",1);
 $pdf->Cell(75,32," Nombre del Alumno ",1);

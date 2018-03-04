@@ -119,6 +119,7 @@ while ($a=mysqli_fetch_array($query)) {
   $colspan=$query2->num_rows;
   echo '<th  colspan="'.$colspan.'">'.$nombrecategoria.'</th>';
 }
+echo '<th  colspan="2">Datos</th>';
 echo '</tr>
 <tr>
 <th>Clave</th>
@@ -159,10 +160,13 @@ while ($a=mysqli_fetch_array($query)) {
     echo '<th class="vtext"  ><p class="rotatetext">'.$nombre.'</p></th>';
   }
 }
-echo '</tr>
+echo '
+<th >Nombre</th>
+<th >Clave</th>
+</tr>
 </thead>
 <tbody>';
-$sql="SELECT clave, idalumno, CONCAT (apellidos,', ', nombres) as nombre FROM `alumnos` WHERE idcole='$idcole' AND idgrado='$idgrado' AND seccion='$sec' ORDER BY clave ASC";
+$sql="SELECT clave, idalumno, activo, CONCAT (apellidos,', ', nombres) as nombre FROM `alumnos` WHERE idcole='$idcole' AND idgrado='$idgrado' AND seccion='$sec' ORDER BY clave ASC";
 include('../../conexion/conexion.php');
 $datos=array();
 $resultado = mysqli_query($conexion,$sql);
@@ -171,7 +175,17 @@ if ($resultado) {
     echo "<tr>";
     $clave=$data['clave'];
     $idalumno=$data['idalumno'];
-    $nombre=$data['nombre'];
+    $activo=$data['activo'];
+    if ($activo=="Retirado") {
+      $activo='<span class="badge badge-danger">'.$activo.'</span>';
+    }
+    if ($activo=="Suspendido") {
+      $activo='<span class="badge badge-danger">'.$activo.'</span>';
+    }
+    if ($activo=="Activo") {
+      $activo='';
+    }
+    $nombre=$data['nombre']." ".$activo;
     $row="";
     $total=0;
     echo "<td>$clave</td>";
@@ -231,7 +245,10 @@ if ($resultado) {
       }
 
     }
-    echo "<td><b style='font-size: 13px' id='total'>$total</b></td>$row";
+    echo "<td><b style='font-size: 13px' class='tot' id='total'>$total</b></td>$row";
+
+    echo "<td nowrap>$nombre</td>";
+    echo "<td>$clave</td>";
   }
 }else {
   echo "Error ".mysqli_errno($conexion).": ".mysqli_error($conexion);

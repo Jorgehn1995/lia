@@ -6,14 +6,12 @@ require '../../assets/glib/isset.php';
 <html>
 <head>
   <meta charset="utf-8" />
-  <title><?php echo "$cole"; ?></title>
+  <?php $titulo="Asesores";
+  include '../lib/header.php'; ?>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta content="Sistema para el control de notas escolares" name="description" />
   <meta content="Jorge Hernandez" name="author" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-  <link rel="shortcut icon" href="../../assets/images/favicon.ico">
-
   <!-- DataTables -->
   <link href="../../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
   <link href="../../plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -21,15 +19,32 @@ require '../../assets/glib/isset.php';
   <!-- App css -->
   <link href="../../plugins/select2/select2.css" rel="stylesheet" type="text/css" />
   <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-
-
-
   <link href="../../assets/css/icons.css" rel="stylesheet" type="text/css" />
   <link href="../../assets/css/style.css" rel="stylesheet" type="text/css" />
 
   <script src="../../assets/js/modernizr.min.js"></script>
   <style media="screen">
+  .rounded-circle, .head{
 
+    background: rgba(59,153,156,1);
+    background: -moz-linear-gradient(left, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(59,153,156,1)), color-stop(100%, rgba(0,177,156,1)));
+    background: -webkit-linear-gradient(left, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
+    background: -o-linear-gradient(left, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
+    background: -ms-linear-gradient(left, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
+    background: linear-gradient(to right, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3b999c', endColorstr='#00b19c', GradientType=1 );
+
+  }
+  .head{
+    width: 100%;
+    height: auto;
+    padding: 2em;
+    /*padding-left: 2em;
+    padding-right: 2em;
+    padding-top: 1em;
+    padding-bottom: 0.3em;*/
+  }
   .headblack{
     border:1pt solid black;
   }
@@ -71,46 +86,50 @@ require '../../assets/glib/isset.php';
 <body>
 
   <?php include '../lib/menu.php'; ?>
-  <div class="" style="display:none;">
-    <?php $idmateria=d("idmateria");
-    $bloque=d("bloque");
-    echo '<input type="text" name="" id="idmateria" value='.$idmateria.'>';
-    echo '<input type="text" name="" id="bloque" value='.$bloque.'>';
-    ?>
-
-  </div>
-
   <div class="wrapper">
+    <div class="head">
+      <div class="row">
+        <div class="col-md-12">
+          <h2 class="text-light"><b>Asesor</b> <small><small> > Bloque I</small></small> </h2>
+        </div>
+        <div class="col-md-12">
+          <p class="text-light">Aqui encontraras el registro de tu grado encargado</p>
+        </div>
+        <div class="col-md-12">
+
+        </div>
+      </div>
+    </div>
+
     <div class="container-fluid">
 
       <!-- Page-Title -->
       <br>
       <!-- end page title end breadcrumb -->
+
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-12" id="inforrow" style="display:none;">
           <div class="card-box">
-            <h4 class="m-t-0 m-b-10 header-title"><b>Grado</b></h4>
-            <p class="text-muted nombreclase"><?php echo $_GET['idgrado'] ?></p>
+            <div class="row">
+              <div class="col-md-8">
+                <h4 class="m-t-0 m-b-0 header-title"><b>Información del Grado</b></h4>
+                <hr>
+                <p class="text-muted" id="ng">Grado</p>
+              </div>
+              <div class="col-md-4">
+                <h4 class="m-t-0 m-b-0 header-title"><b>Acciones</b></h4>
+                <hr>
+                <div class="form-group">
+                  <button type="button" class="btn btn-outline-secondary" name="button"><i class="ti-printer"></i> Imprimir</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card-box">
-            <h3 class="m-t-0 m-b-30 header-title"><b>Bloque</b></h3>
-            <h4 class="m-t-0 m-b-25 header-title"><b class="bloque"><?php echo $_GET['bloque'] ?></b></h4>
-          </div>
-        </div>
-        <div class="col-md-4 hide-phone">
-          <div class="card-box">
-            <h4 class="m-t-0 m-b-30 header-title"><b>Acciones</b></h4>
-            <p class="text-mutex">...</p>
-            <!--<button type="button" class="btn btn-danger  waves-effect waves-light" > Ver PDF </button>-->
-          </div>
-        </div>
-      </div>
-      <div class="row">
         <div class="col-md-12">
           <div class="card-box">
             <!--<h4 class="m-t-0 header-title">Calificaciones Por Alumno</h4>-->
+
             <div style="width:100%; padding-left:-10px; ">
               <div  class="table-responsive" id="divcuadro">
                 <div class="">
@@ -149,6 +168,7 @@ require '../../assets/glib/isset.php';
             </div>
           </div>
           <div class="row">
+
             <div class="col-md-12">
               <div class="form-group">
                 <label for="field-3" class="control-label">Nombre Actividad</label>
@@ -234,6 +254,16 @@ require '../../assets/glib/isset.php';
   function notifi(tipo,titulo,msg){
     $.Notification.autoHideNotify(tipo, 'top right', titulo, msg);
   }
+  function cargarnombre(){
+    $.get("nombrecuadro.php",function(response){
+      if (response[0]["r"]==true) {
+        $("#inforrow").show(500);
+        $("#ng").text(response[0]["response"]);
+      }else {
+        $("#inforrow").hide();
+      }
+    });
+  }
   function cargarcuadro(){
     var idmate=1;
     var idgrado = vars['idgrado'];
@@ -248,20 +278,43 @@ require '../../assets/glib/isset.php';
       url:   'tablacuadro.php',
       type:  'GET',
       beforeSend: function () {
-        swal("Cargando Alumnos: esto puede tardar unos minutos...", {
-          buttons: false,
-        });
+        var load='<div class="">'+
+          '<div class="text-center">'+
+            '<br>'+
+            '<img src="../../assets/images/loadcustom.gif" width="80" height="auto" alt=""><br>'+
+            '<h3 class="text-muted">Cargando Alumnos</h3>'+
+            '<div id="icon">'+
+              '<h5 class="text-muted">Esto puede tardar unos minutos</h5>'+
+            '</div>'+
+          '</div>'+
+        '</div>';
+        $('#divcuadro').html(load);
       },
       error: function () {
-        swal("Sin Internet", "No se puede conectar a la base de datos", "error");
+        var ld='<div class="">'+
+          '<div class="text-center">'+
+            '<br>'+
+            '<img src="../../assets/images/nodatafound2.png" width="80" height="auto" alt=""><br>'+
+            '<h3 class="text-muted">Sin Internet</h3>'+
+            '<div id="icon">'+
+              '<h5 class="text-muted">Parece que hubo un error al cargar el cuadro, o haz perdido la conexión a internet</h5><br>'+
+            '</div>'+
+            '<div class="form-group">'+
+              '<button type="button" onClick="cargarcuadro();" class="btn btn-outline-success " name="button">Intentar de Nuevo</button>'+
+            '</div>'+
+          '</div>'+
+        '</div>';
+        //swal("Sin Internet", "No se puede conectar a la base de datos", "error");
+        $('#divcuadro').html(ld);
       },
       success:  function (response) {
         //console.log(response);
+
         $('#divcuadro').html(response);
         $('.dataTable').wrap('<div class="dataTables_scroll" />');
         datat();
         desplazar();
-        swal.close();
+        cargarnombre()
       },
       //timeout:25000
     });
@@ -329,38 +382,38 @@ require '../../assets/glib/isset.php';
     });
   }
   function setname(){
-      var actividad=$("#idactividad").val();
-      var idmate=1;
-      var idgrado = vars['idgrado'];
-      var bloque =vars['bloque'];
-      var seccion= vars['seccion'];
-      var id = idmate+"-"+bloque+"-"+idgrado+"-"+seccion+"-"+actividad;
-      var nombre=$("#nombreactividad").val();
-      var parametros = {
-        "id":id,
-        "nombre":nombre
-      };
-      $.ajax({
-        data:  parametros,
-        url:   'guardarnombre.php',
-        type:  'POST',
-        beforeSend: function () {
-        },
-        error: function () {
-          swal("Sin Internet", "No se puede conectar a la base de datos", "error");
-          //$d.css('background-color', '#F5A9A9');
-        },
-        success:  function (response) {
-          //console.log(idcuadro+" - "+response);
-          if (response=='true') {
-            notifi("success","Nombre Guardado","Se ha guardado exitosamente el nombre de la actividad "+nombre);
-            $('body').find("#"+actividad).html(nombre);
-            $("#con-close-modal").modal("hide");
-          }
-        },
-        timeout:10000
-      });
-      return nombre;
+    var actividad=$("#idactividad").val();
+    var idmate=1;
+    var idgrado = vars['idgrado'];
+    var bloque =vars['bloque'];
+    var seccion= vars['seccion'];
+    var id = idmate+"-"+bloque+"-"+idgrado+"-"+seccion+"-"+actividad;
+    var nombre=$("#nombreactividad").val();
+    var parametros = {
+      "id":id,
+      "nombre":nombre
+    };
+    $.ajax({
+      data:  parametros,
+      url:   'guardarnombre.php',
+      type:  'POST',
+      beforeSend: function () {
+      },
+      error: function () {
+        swal("Sin Internet", "No se puede conectar a la base de datos", "error");
+        //$d.css('background-color', '#F5A9A9');
+      },
+      success:  function (response) {
+        //console.log(idcuadro+" - "+response);
+        if (response=='true') {
+          notifi("success","Nombre Guardado","Se ha guardado exitosamente el nombre de la actividad "+nombre);
+          $('body').find("#"+actividad).html(nombre);
+          $("#con-close-modal").modal("hide");
+        }
+      },
+      timeout:10000
+    });
+    return nombre;
   }
   function guardar(idnota, punteo, $d){
     var parametros = {
@@ -421,7 +474,6 @@ require '../../assets/glib/isset.php';
     nosearchbox();
     cargarcuadro();
     $("#grados").change(function(){
-
       nombremateria();
     });
   });

@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set("America/Guatemala");
 $estatuto=session_status();
 if ($estatuto < 2){
   session_start();

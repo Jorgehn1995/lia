@@ -4,7 +4,7 @@ require '../../conexion/conexion.php';
 require '../../assets/datetime.php';
 // En versiones de PHP anteriores a la 4.1.0, debería utilizarse $HTTP_POST_FILES en lugar
 // de $_FILES.
-$dir_subida = 'archivos/';
+$dir_subida = '../../archivos/';
 $uniqid=uniqid();
 $extension = end(explode(".", $_FILES['uploadfile']['name']));
 

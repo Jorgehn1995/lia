@@ -2,18 +2,37 @@
 require '../lib/sesion.php';
 require '../../conexion/conexion.php';
 require '../../assets/glib/isset.php';
-
-
 $val=d("id");
-//$val="1-1-1-A";
-if ($val==0 || $val=="") {
+$id="";
+$sqlasesor="SELECT * FROM `asesores` WHERE idpersonal='$idusuario' LIMIT 1";
+$query=mysqli_query($conexion,$sqlasesor);
+if ($query->num_rows==0) {
   exit('<div class="">
     <div class="text-center">
       <br>
       <img src="../../assets/images/nodatafound2.png" width="80" height="auto" alt=""><br>
-      <h3 class="text-muted">Error!</h3>
+      <h3 class="text-muted">Sin Grado Asignado</h3>
       <div id="icon">
-        <h5 class="text-muted">Se produjo un error al cargar el cuadro <br> Error No: 0x0000001 </h5>
+        <h5 class="text-muted">No tienes un grado asignado para esta sección </h5>
+      </div>
+    </div>
+  </div>');
+}else {
+  while ($g=mysqli_fetch_array($query)) {
+    $id="0-".$bloqueencurso."-".$g['idgrado']."-".$g['seccion'];
+  }
+}
+
+$val=$id;
+//$val="1-1-1-A";
+if ($val=="") {
+  exit('<div class="">
+    <div class="text-center">
+      <br>
+      <img src="../../assets/images/nodatafound2.png" width="80" height="auto" alt=""><br>
+      <h3 class="text-muted">No Asignado</h3>
+      <div id="icon">
+        <h5 class="text-muted">No estas asignado como asesor </h5>
       </div>
     </div>
   </div>');
@@ -71,7 +90,7 @@ while ($a=mysqli_fetch_array($query)) {
 echo '</tr>
 </thead>
 <tbody>';
-$sql="SELECT clave, idalumno, CONCAT (apellidos,', ', nombres) as nombre FROM `alumnos` WHERE idcole='$idcole' AND idgrado='$idgrado' AND seccion='$sec' ORDER BY clave ASC";
+$sql="SELECT clave, idalumno, activo, CONCAT (apellidos,', ', nombres) as nombre FROM `alumnos` WHERE idcole='$idcole' AND idgrado='$idgrado' AND seccion='$sec' ORDER BY clave ASC";
 include('../../conexion/conexion.php');
 $datos=array();
 $resultado = mysqli_query($conexion,$sql);
@@ -80,7 +99,17 @@ if ($resultado) {
     echo "<tr>";
     $clave=$data['clave'];
     $idalumno=$data['idalumno'];
-    $nombre=$data['nombre'];
+    $activo=$data['activo'];
+    if ($activo=="Retirado") {
+      $activo='<span class="badge badge-danger">'.$activo.'</span>';
+    }
+    if ($activo=="Suspendido") {
+      $activo='<span class="badge badge-danger">'.$activo.'</span>';
+    }
+    if ($activo=="Activo") {
+      $activo='';
+    }
+    $nombre=$data['nombre'].$activo;
     $row="";
     $total=0;
     echo "<td>$clave</td>";
@@ -97,7 +126,7 @@ if ($resultado) {
         if ($conect) {
           $filas=$conect->num_rows;
           if ($filas==0) {
-            $sqlinsert="INSERT INTO `notasasesores`(`idnota`, `idcole`, `idgrado`, `idmateria`, `idbloque`, `idmodelo`, `idalumno`, `asignado`, `obtenido`) VALUES ('','$idcole','$idgrado','$idmateria','$bloque','$idactividad','$idalumno','0','0')";
+            $sqlinsert="INSERT INTO `notasasesores`(`idnota`, `idcole`, `idgrado`, `idbloque`, `idmodelo`, `idalumno`, `asignado`, `obtenido`) VALUES ('','$idcole','$idgrado','$bloque','$idactividad','$idalumno','0','0')";
             $r=mysqli_query($conexion,$sqlinsert);
             if ($r) {
               $conect=mysqli_query($conexion,$sqlnotas);

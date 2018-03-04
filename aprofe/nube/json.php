@@ -29,7 +29,7 @@ while ($a=mysqli_fetch_array($resultado)) {
     $class="open";
     $boton='<button type="button" data-raiz="'.$a['idnube'].'" class="btn btn-secondary btn-sm waves-effect waves-light open" name="button"><i class="  ti-folder "></i> Abrir</button>';
   }else {
-    $boton='<a href="archivos/'.$a['direccion'].'" download="'.utf8_encode($a['nuben']).'" class="btn btn-secondary btn-sm waves-effect waves-light"><i class=" ti-download "></i> Descargar</a>';
+    $boton='<a href="../../archivos/'.$a['direccion'].'" download="'.utf8_encode($a['nuben']).'" class="btn btn-secondary btn-sm waves-effect waves-light"><i class=" ti-download "></i> Descargar</a>';
     $class="ver";
   }
   $agg = array(

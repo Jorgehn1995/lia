@@ -63,6 +63,11 @@
                   En Blanco
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="#calif" data-toggle="tab" aria-expanded="false" class="nav-link">
+                  Calificación
+                </a>
+              </li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane fade active show" id="home">
@@ -87,19 +92,27 @@
                     echo "</select>";
                     ?>
                   </div>
-                  <div class="col-md-3" id="divsec1">
+                  <div class="col-md-2" id="divsec1">
                     <select class="form-control select2" name="">
                       <option value="">Seleccionar </option>
                     </select>
                   </div>
-                  <div class="col-md-3" id="divmes">
+                  <div class="col-md-2" >
+                    <select class="form-control select2" id="size" name="">
+                      <option value="v">Vertical</option>
+                      <option value="h">Horizontal</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2" id="divmes">
                     <select class="form-control select2" id="mes" name="">
                       <option value="none">Mes</option>
                       <?php
+                      setlocale(LC_ALL, 'es_GT');
+                      date_default_timezone_set("America/Guatemala");
                       $meses=array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre");
                       for ($i=1; $i <=12 ; $i++) {
                         $ma=$i-1;
-                        $mes=date("m");
+                        $mes=date("m")-1;
                         if ($ma==$mes) {
                           $s="selected";
                         }else {
@@ -158,6 +171,13 @@
                   </div>
                   <div class="col-md-2">
                     <button type='button' class='gen2 btn btn-simple btn-danger btn-icon' data-toggle='modal' data-target='#datos' title='Agregar un nuevo alumno' ><i class=' mdi mdi-file-pdf  '></i> Generar</button>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="calif">
+                <div class="row">
+                  <div class="col-md-12">
+                    <button type="button" class="btn btn-success tcuadros" name="button"><i class="ti-printer"></i> Imprimit Todos los Cuadros de Calificación</button>
                   </div>
                 </div>
               </div>
@@ -247,7 +267,8 @@ function asistencia(){
       $("#iframe").attr("src", url);
     }else {
       var grado=idgrado+"-"+seccion+"-"+mes;
-      var url="../reportes/asistenciagradoseccion.php?grado="+grado;
+      var size="&size="+$("#size").val();
+      var url="../reportes/asistenciagradoseccion.php?grado="+grado+size;
       $("#iframe").attr("src", url);
     }
     swal("Generando Listado", {
@@ -308,6 +329,7 @@ function enblanco(){
     });
   }
 }
+
 $("#grado1").change(function(){
   $.get("secciones.php?id=1&idgrado="+$("#grado1").val(),function(sec){
     $("#divsec1").html(sec);
@@ -327,7 +349,17 @@ $(".gen2").on('click',function(){
   enblanco();
 });
 $(document).ready(function() {
-
+  $(".tcuadros").click(function(){
+    var url="../reportes/index.php";
+    $("#iframe").attr("src", url);
+    swal("Generando Listado", {
+      buttons: false,
+    });
+    $('#iframe').ready(function() {
+      swal.close();
+        $(".mostrarlistado").modal();
+    });
+  });
   function content(){
     $("#blank").css("display", "none");
     $("#content").css("display", "block");
