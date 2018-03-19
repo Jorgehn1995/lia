@@ -101,7 +101,7 @@ class PDF extends TCPDF
 		// Set font
 		$this->SetFont('helvetica', 'I', 8);
 		// Page number
-		$this->Cell(0,10,"Sistema LIA | www.imnedcoop.com | Usuario Profesor | "."Pagina ".$this->getAliasNumPage().'/'.$this->getAliasNbPages(),0,0,'C');
+		$this->Cell(0,10,"Sistema LIA | Usuario Profesor | "."Pagina ".$this->getAliasNumPage().'/'.$this->getAliasNbPages(),0,0,'C');
 	}
 }
 //$pdf = new PDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -111,9 +111,9 @@ $pageLayout = array(355.6, 215.9); //  or array($height, $width)
 $pdf = new PDF('L', 'mm', $pageLayout, true, 'UTF-8', false);
 // set document information
 $pdf->SetCreator("LIA System");
-$pdf->SetAuthor('www.inmedcoop.com');
+$pdf->SetAuthor('imed/inebco');
 $pdf->SetTitle('Cuadro de Registro');
-$pdf->SetSubject('IMED REGISTROS PDF');
+$pdf->SetSubject(' REGISTROS PDF');
 
 
 $pdf->setPrintHeader(false);
@@ -122,7 +122,7 @@ $pdf->AddPage();
 
 $pdf->Image("$fpshared",10,8,19,19,'JPG');
 $pdf->Cell(34,3,'',0);
-$pdf->Cell(250,8,'Instituto Mixto de Educación Diversificada por Cooperativa IMED',0,0,'C');
+$pdf->Cell(250,8,$ncole,0,0,'C');
 //$pdf->Cell(50,9,,0,0,'R');
 $pdf->Ln(8);
 $pdf->Cell(34,3,'',0);

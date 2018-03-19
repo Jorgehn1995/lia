@@ -71,9 +71,9 @@
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
         Se han añadido las siguientes <a href="#" class="alert-link">funciones</a>:
         <ul>
-          <li style="display:none;">Registro de inicio de sesión</li>
-          <li >Seguimiento sobre registro de notas</li>
-          <li style="display:none;">Ver ingreso de notas de asesor</li>
+          <li>Registro de inicio de sesión</li>
+          <li>Seguimiento sobre registro de notas</li>
+          <li>Ver ingreso de notas de asesor</li>
         </ul>
       </div>
       <div class="container-fluid">
@@ -83,11 +83,11 @@
         <!-- end page title end breadcrumb -->
         <div class="row" >
           <!-- CHAT -->
-          <div class="col-lg-4" style="display:none;">
+          <div class="col-lg-4">
             <div class="card-box">
               <h4 class="m-t-0 m-b-20 header-title"><b>Registro de Inicio de Sesión</b></h4>
 
-              <div class="chat-conversation" >
+              <div class="chat-conversation" id="classdiv">
                 <ul class="conversation-list c-list nicescroll" >
 
                   <li class="clearfix ">
@@ -124,7 +124,28 @@
               <h4 class="m-t-0 m-b-20 header-title"><b>Registro de Notas</b></h4>
 
               <div class="chat-conversation">
-                <ul class="conversation-list nicescroll" id="classdiv">
+                <ul class="conversation-list nicescroll">
+
+                  <li class="clearfix ">
+
+                    <div class="conversation-text">
+                      <div class="ctext-wrap">
+                        <i class="text-success">Nota Agregada</i>
+                        <i class="text-muted"><small>hace 2 horas</small></i>
+                        <p>
+                          Haz agregado <b>3 pts</b> a  Jorge Hernandez en la clase <b>Tecnologias de la informacion y la comunicacion</b>
+                        </p>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="pull-right">
+                              <a href="#" class="text-success"><b>Ver</b></a>
+                              <a href="#" class="text-danger"><b>Deshacer</b></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
 
                 </ul>
 
@@ -132,7 +153,7 @@
             </div>
 
           </div> <!-- end col-->
-          <div class="col-lg-4" style="display:none;">
+          <div class="col-lg-4">
             <div class="card-box">
               <h4 class="m-t-0 m-b-20 header-title"><b>Registro de Asesores</b></h4>
 
@@ -191,21 +212,8 @@
       };
       $.ajax({
         data:  parametros,
-        url:   'lognotas.php',
+        url:   'clases.php',
         type:  'POST',
-        beforeSend: function () {
-          var load='<div class="">'+
-            '<div class="text-center">'+
-              '<br>'+
-              '<img src="../../assets/images/loadcustom.gif" width="80" height="auto" alt=""><br>'+
-              '<h3 class="text-muted">Cargando Alumnos</h3>'+
-              '<div id="icon">'+
-                '<h5 class="text-muted">Esto puede tardar unos minutos</h5>'+
-              '</div>'+
-            '</div>'+
-          '</div>';
-          $('#classdiv').html(load);
-        },
         success: function (response) {
           $("#classdiv").html(response);
         }
@@ -221,7 +229,7 @@
       }
     });
     $(document).ready(function(){
-      cargarmaterias();
+      //cargarmaterias();
 
     });
   </script>

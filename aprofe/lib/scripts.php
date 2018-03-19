@@ -4,6 +4,7 @@
 <script src="../../assets/js/bootstrap.min.js"></script>
 <script src="../../assets/js/waves.js"></script>
 <script src="../../assets/js/jquery.slimscroll.js"></script>
+<script src="../../assets/js/jquery.nicescroll.js"></script>
 <script src="../../assets/js/jquery.scrollTo.min.js"></script>
 
 <script src="../../plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
