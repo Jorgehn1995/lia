@@ -114,8 +114,6 @@ $pdf->SetCreator("LIA System");
 $pdf->SetAuthor('imed/inebco');
 $pdf->SetTitle('Cuadro de Registro');
 $pdf->SetSubject(' REGISTROS PDF');
-
-
 $pdf->setPrintHeader(false);
 //$pdf->setPrintFooter(false);
 $pdf->AddPage();
