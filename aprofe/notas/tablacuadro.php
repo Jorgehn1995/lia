@@ -89,7 +89,8 @@ if ($qquery->num_rows==0) {
     if ($nclase=="") {
       $nclase=$e['nombre'];
     }
-    echo '<div class="row">
+    //se cambia la variable por echo
+    $gitignore= '<div class="row">
       <div class="col-md-6">
         <p class="text-mutex">'.$ngrado." ".$sec.' > '.$nclase.' </p>
         <!--<button type="button" class="btn btn-danger  waves-effect waves-light" > Ver PDF </button>-->

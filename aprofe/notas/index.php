@@ -24,7 +24,7 @@ require '../../assets/glib/isset.php';
 
   <link href="../../assets/css/icons.css" rel="stylesheet" type="text/css" />
   <link href="../../assets/css/styleprofe.css" rel="stylesheet" type="text/css" />
-<link href="../../plugins/fancibox/jquery.fancybox.min.css" rel="stylesheet">
+  <link href="../../plugins/fancibox/jquery.fancybox.min.css" rel="stylesheet">
   <script src="../../assets/js/modernizr.min.js"></script>
   <style media="screen">
 
@@ -33,25 +33,25 @@ require '../../assets/glib/isset.php';
   }
   .rounded-circle, .head{
 
-      background: rgba(59,153,156,1);
-      background: -moz-linear-gradient(left, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
-      background: -webkit-gradient(left top, right top, color-stop(0%, rgba(59,153,156,1)), color-stop(100%, rgba(0,177,156,1)));
-      background: -webkit-linear-gradient(left, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
-      background: -o-linear-gradient(left, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
-      background: -ms-linear-gradient(left, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
-      background: linear-gradient(to right, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3b999c', endColorstr='#00b19c', GradientType=1 );
+    background: rgba(59,153,156,1);
+    background: -moz-linear-gradient(left, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(59,153,156,1)), color-stop(100%, rgba(0,177,156,1)));
+    background: -webkit-linear-gradient(left, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
+    background: -o-linear-gradient(left, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
+    background: -ms-linear-gradient(left, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
+    background: linear-gradient(to right, rgba(59,153,156,1) 0%, rgba(0,177,156,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3b999c', endColorstr='#00b19c', GradientType=1 );
 
-    }
+  }
   .head{
-      width: 100%;
-      height: auto;
-      padding: 2em;
-      /*padding-left: 2em;
-      padding-right: 2em;
-      padding-top: 1em;
-      padding-bottom: 0.3em;*/
-    }
+    width: 100%;
+    height: auto;
+    padding: 2em;
+    /*padding-left: 2em;
+    padding-right: 2em;
+    padding-top: 1em;
+    padding-bottom: 0.3em;*/
+  }
   td{
     font-size:11px;
     padding:0px;
@@ -119,6 +119,30 @@ require '../../assets/glib/isset.php';
       <br>
       <!-- end page title end breadcrumb -->
       <div class="row">
+        <div class="col-md-12" id="inforrow" >
+          <div class="card-box">
+            <div class="row">
+              <div class="col-md-5">
+                <h4 class="m-t-0 m-b-0 header-title"><b>Información del Grado</b></h4>
+                <hr>
+                <p class="text-muted" id="ng">Cargando informacion del grado...</p>
+              </div>
+
+              <div class="col-md-3">
+                <h4 class="m-t-0 m-b-0 header-title"><b>Acciones</b></h4>
+                <hr>
+                <div class="form-group">
+                  <button type="button" class="btn btn-outline-secondary btn-printer" name="button"><i class="ti-printer"></i> Imprimir PDF</button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <h4 class="m-t-0 m-b-0 header-title"><b>Estado</b></h4>
+                <hr>
+                <p class="text-muted text-warning" id="status">Conectando...</p>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="col-md-12">
           <div class="card-box">
             <!--<h4 class="m-t-0 header-title">Calificaciones Por Alumno</h4>-->
@@ -227,9 +251,12 @@ require '../../assets/glib/isset.php';
   ?>
   <!-- End Footer -->
   <!-- jQuery  -->
-<script src="../../plugins/fancibox/jquery.fancybox.min.js"></script>
+  <script src="../../plugins/fancibox/jquery.fancybox.min.js"></script>
   <script type="text/javascript">
-
+  $.ajaxSetup({
+    timeout: 20000,
+    retryAfter: 2000
+  });
   function NaN2Zero(n){
     return isNaN( n ) ? 0 : n;
   }
@@ -305,30 +332,30 @@ require '../../assets/glib/isset.php';
       type:  'GET',
       beforeSend: function () {
         var load='<div class="">'+
-          '<div class="text-center">'+
-            '<br>'+
-            '<img src="../../assets/images/loadcustom.gif" width="80" height="auto" alt=""><br>'+
-            '<h3 class="text-muted">Cargando Alumnos</h3>'+
-            '<div id="icon">'+
-              '<h5 class="text-muted">Esto puede tardar unos minutos</h5>'+
-            '</div>'+
-          '</div>'+
+        '<div class="text-center">'+
+        '<br>'+
+        '<img src="../../assets/images/loadcustom.gif" width="80" height="auto" alt=""><br>'+
+        '<h3 class="text-muted">Cargando Alumnos</h3>'+
+        '<div id="icon">'+
+        '<h5 class="text-muted">Esto puede tardar unos minutos</h5>'+
+        '</div>'+
+        '</div>'+
         '</div>';
         $('#divcuadro').html(load);
       },
       error: function () {
         var ld='<div class="">'+
-          '<div class="text-center">'+
-            '<br>'+
-            '<img src="../../assets/images/nodatafound2.png" width="80" height="auto" alt=""><br>'+
-            '<h3 class="text-muted">Sin Internet</h3>'+
-            '<div id="icon">'+
-              '<h5 class="text-muted">Parece que hubo un error al cargar el cuadro, o haz perdido la conexión a internet</h5><br>'+
-            '</div>'+
-            '<div class="form-group">'+
-              '<button type="button" onClick="cargarcuadro(\''+id+'\');" class="btn btn-outline-success " name="button">Intentar de Nuevo</button>'+
-            '</div>'+
-          '</div>'+
+        '<div class="text-center">'+
+        '<br>'+
+        '<img src="../../assets/images/nodatafound2.png" width="80" height="auto" alt=""><br>'+
+        '<h3 class="text-muted">Sin Internet</h3>'+
+        '<div id="icon">'+
+        '<h5 class="text-muted">Parece que hubo un error al cargar el cuadro, o haz perdido la conexión a internet</h5><br>'+
+        '</div>'+
+        '<div class="form-group">'+
+        '<button type="button" onClick="cargarcuadro(\''+id+'\');" class="btn btn-outline-success " name="button">Intentar de Nuevo</button>'+
+        '</div>'+
+        '</div>'+
         '</div>';
         //swal("Sin Internet", "No se puede conectar a la base de datos", "error");
         $('#divcuadro').html(ld);
@@ -409,42 +436,45 @@ require '../../assets/glib/isset.php';
     });
   }
   function setname(){
-      var actividad=$("#idactividad").val();
-      var idlk=$("#loadkey").val();
-      var id=$("#loadkey").val()+"-"+actividad;
-      var nombre=$("#nombreactividad").val();
-      var parametros = {
-        "id":id,
-        "nombre":nombre
-      };
-      $.ajax({
-        data:  parametros,
-        url:   'guardarnombre.php',
-        type:  'POST',
-        beforeSend: function () {
-        },
-        error: function () {
-          swal("Sin Internet", "No se puede conectar a la base de datos", "error");
-          //$d.css('background-color', '#F5A9A9');
-        },
-        success:  function (response) {
-          //console.log(idcuadro+" - "+response);
-          if (response=='true') {
-            notifi("success","Nombre Guardado","Se ha guardado exitosamente el nombre de la actividad "+nombre);
-            $('body').find("#"+actividad).html(nombre);
-            //cargarcuadro()
-            $("#con-close-modal").modal("hide");
-          }
-        },
-        timeout:10000
-      });
-      return nombre;
+    var actividad=$("#idactividad").val();
+    var idlk=$("#loadkey").val();
+    var id=$("#loadkey").val()+"-"+actividad;
+    var nombre=$("#nombreactividad").val();
+    var parametros = {
+      "id":id,
+      "nombre":nombre
+    };
+    $.ajax({
+      data:  parametros,
+      url:   'guardarnombre.php',
+      type:  'POST',
+      beforeSend: function () {
+      },
+      error: function () {
+        swal("Sin Internet", "No se puede conectar a la base de datos", "error");
+        //$d.css('background-color', '#F5A9A9');
+      },
+      success:  function (response) {
+        //console.log(idcuadro+" - "+response);
+        if (response=='true') {
+          notifi("success","Nombre Guardado","Se ha guardado exitosamente el nombre de la actividad "+nombre);
+          $('body').find("#"+actividad).html(nombre);
+          //cargarcuadro()
+          $("#con-close-modal").modal("hide");
+        }
+      },
+      timeout:10000
+    });
+    return nombre;
   }
+
   function guardar(idnota, punteo, $d){
+    var dd=$d;
     var parametros = {
       "idnota":idnota,
       "punteo":punteo,
     };
+
     $.ajax({
       data:  parametros,
       url:   '../ajax/insertnotas.php',
@@ -453,13 +483,18 @@ require '../../assets/glib/isset.php';
 
       },
       error: function () {
-        swal("Sin Internet", "No se puede conectar a la base de datos", "error");
-        $d.css('background-color', '#F5A9A9');
+        //swal("Sin Internet", "No se puede conectar a la base de datos", "error");
+        $d.css('background-color', '#FFFF00');
+        //notifi("warning","Reconectando","Se ha perdido la conexión a la base de datos, se esta intentando reconectar");
+
+        //$('#status').text('#'+attempts+' : Failure... Retry after ' + $.ajaxSetup().retryAfter / 1000 + '  seconds');
+        setTimeout(guardar(idnota, punteo, $d), $.ajaxSetup().retryAfter);
+        //guarda(idnota,punteo,$d);
       },
       success:  function (response) {
         //console.log(idnota+" - "+response);
-
         if (response=="Exito") {
+          console.log("Exito");
           $d.css('background-color', '#A9F5A9');
         }else {
           $d.css('background-color', '#F5A9A9');
@@ -468,7 +503,8 @@ require '../../assets/glib/isset.php';
         }
         //swal("Good job!", response, "success");
       },
-      timeout:10000
+      //timeout:20000
+
     });
   }
   function selectmateriasinit(){

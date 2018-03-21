@@ -176,7 +176,7 @@
       $.ajax({
         data:  parametros,
         url:   'close.php',
-        type:  'POST',
+        type:  'GET',
         success: function (r) {
           notifi(r[0]['type'],r[0]['title'],r[0]['msg']);
           if (r[0]['r']) {

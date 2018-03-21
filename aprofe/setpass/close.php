@@ -8,6 +8,7 @@ $datos=array();
 $actual=d("actual");
 $nueva=d("nueva");
 if ($nueva=="" || $actual=="") {
+
   $agg = array(
     'r' => false,
     'title'=>'Campos Vacios',
@@ -19,6 +20,7 @@ if ($nueva=="" || $actual=="") {
   $ex=utf8_decode(json_encode($arreglo, JSON_UNESCAPED_UNICODE));
   echo $ex;
 }else {
+
   $sqlasesor="SELECT * FROM `usuarios` WHERE asociado='$idusuario' LIMIT 1";
   $query=mysqli_query($conexion,$sqlasesor);
   if ($query->num_rows==0) {
@@ -29,15 +31,22 @@ if ($nueva=="" || $actual=="") {
       'type'=>'error'
     );
     array_push($datos, $agg);
+    $arreglo = $datos;
+    $ex=utf8_decode(json_encode($arreglo, JSON_UNESCAPED_UNICODE));
+    echo $ex;
   }else {
     while ($g=mysqli_fetch_array($query)) {
-      $idu=$g['idusuarios'];
-      if (verificar($actual,$g['pass'])==1) {
+      $idu=$idusuario;
+
+      $hash=$g['pass'];
+      $veri=password_verify($actual,$hash);
+      //exit($veri);
+      if ($veri) {
         $cryp=encriptar($nueva);
         $sql2="UPDATE `usuarios` SET `pass`='$cryp' WHERE idusuarios='$idu'";
         $query2=mysqli_query($conexion,$sql2);
         $agg = array(
-          'r' => true,
+          'r' => $veri,
           'title'=>utf8_encode('Contraseña Cambiada'),
           'msg'=>utf8_encode('Contraseña cambiada exitosamente'),
           'type'=>'success'
@@ -45,9 +54,9 @@ if ($nueva=="" || $actual=="") {
         array_push($datos, $agg);
       }else {
         $agg = array(
-          'r' => false,
+          'r' => $veri,
           'title'=>utf8_encode('Contraseña Erronea'),
-          'msg'=>utf8_encode('Haz ingresado mal tu contraseña actual, intantalo de nuevo'),
+          'msg'=>utf8_encode('Error 0x001 Haz ingresado mal tu contraseña actual, intantalo de nuevo'),
           'type'=>'error'
         );
         array_push($datos, $agg);
