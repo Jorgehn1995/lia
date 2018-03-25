@@ -119,7 +119,7 @@ require '../../assets/glib/isset.php';
       <br>
       <!-- end page title end breadcrumb -->
       <div class="row">
-        <div class="col-md-12" id="inforrow" >
+        <div class="col-md-12 inforrow" id="inforrow" style="display:none;" >
           <div class="card-box">
             <div class="row">
               <div class="col-md-5">
@@ -127,18 +127,17 @@ require '../../assets/glib/isset.php';
                 <hr>
                 <p class="text-muted" id="ng">Cargando informacion del grado...</p>
               </div>
-
-              <div class="col-md-3">
-                <h4 class="m-t-0 m-b-0 header-title"><b>Acciones</b></h4>
-                <hr>
-                <div class="form-group">
-                  <button type="button" class="btn btn-outline-secondary btn-printer" name="button"><i class="ti-printer"></i> Imprimir PDF</button>
-                </div>
-              </div>
               <div class="col-md-4">
                 <h4 class="m-t-0 m-b-0 header-title"><b>Estado</b></h4>
                 <hr>
-                <p class="text-muted text-warning" id="status">Conectando...</p>
+                <p class="text-muted " id="status">Conectando...</p>
+              </div>
+              <div class="col-md-3">
+                <h4 class="m-t-0 m-b-0 header-title"><b>Acciones</b></h4>
+                <hr>
+                <div class="form-group" id="actions">
+
+                </div>
               </div>
             </div>
           </div>
@@ -161,6 +160,11 @@ require '../../assets/glib/isset.php';
               </div>
 
             </div>
+          </div>
+        </div>
+        <div class="col-md-12 inforrow" style="display:none;">
+          <div class="card-box">
+            <p class="text-muted">Cuadro ultima vez guardado; <span id="infospan"></span></p>
           </div>
         </div>
       </div>
@@ -191,7 +195,6 @@ require '../../assets/glib/isset.php';
               </div>
             </div>
           </div>
-
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Cerrar</button>
@@ -321,7 +324,7 @@ require '../../assets/glib/isset.php';
     $.Notification.autoHideNotify(tipo, 'top right', titulo, msg);
   }
   function cargarcuadro(id){
-
+    $(".inforrow").show(500);
     var id2 = id ;
     var parametros = {
       "id":id2
@@ -331,6 +334,10 @@ require '../../assets/glib/isset.php';
       url:   'tablacuadro.php',
       type:  'GET',
       beforeSend: function () {
+        $("#ng").text("Cargando...");
+        $("#actions").html("Cargando...");
+        $("#status").text("Cargando...");
+
         var load='<div class="">'+
         '<div class="text-center">'+
         '<br>'+
@@ -363,12 +370,15 @@ require '../../assets/glib/isset.php';
       success:  function (response) {
         //console.log(response);
         $("#loadkey").val(id);
+
         $('#divcuadro').html(response);
         $('.dataTable').wrap('<div class="dataTables_scroll" />');
+        info();
         datat();
         desplazar();
         history.pushState(null,"","?loadkey="+id);
         swal.close();
+
       },
       //timeout:25000
     });
@@ -467,7 +477,40 @@ require '../../assets/glib/isset.php';
     });
     return nombre;
   }
+  function info(){
+    var idlk=$("#loadkey").val();
+    var nombre=$("#ng");
+    var boton =$("#actions");
+    var status=$("#status");
+    var parametros = {
+      "loadkey":idlk,
+    };
+    $.ajax({
+      data:  parametros,
+      url:   'info.php',
+      type:  'POST',
+      beforeSend: function () {
+        $("#ng").text("Cargando...");
+        $("#infospan").text("Obteniendo Información...");
+        //$("#actions").html("Cargando...");
+        $("#status").text("Cargando...");
+      },
+      error: function () {
 
+        setTimeout(info(), $.ajaxSetup().retryAfter);
+        //$d.css('background-color', '#F5A9A9');
+      },
+      success:  function (response) {
+        if (response[0]["r"]) {
+          var msg=response[0]["hace"];
+          $("#infospan").text(response[0]["datetime"]);
+          nombre.text(response[0]["grado"]);
+          boton.html(response[0]["actions"]);
+          status.text(msg);
+        }
+      },
+    });
+  }
   function guardar(idnota, punteo, $d){
     var dd=$d;
     var parametros = {
@@ -480,7 +523,7 @@ require '../../assets/glib/isset.php';
       url:   '../ajax/insertnotas.php',
       type:  'GET',
       beforeSend: function () {
-
+        //info();
       },
       error: function () {
         //swal("Sin Internet", "No se puede conectar a la base de datos", "error");
@@ -489,14 +532,24 @@ require '../../assets/glib/isset.php';
 
         //$('#status').text('#'+attempts+' : Failure... Retry after ' + $.ajaxSetup().retryAfter / 1000 + '  seconds');
         setTimeout(guardar(idnota, punteo, $d), $.ajaxSetup().retryAfter);
+        $("#status").text("Reconectando y Guardardando...");
+        $("#status").removeClass("text-success");
+        $("#status").addClass("text-warning");
         //guarda(idnota,punteo,$d);
       },
       success:  function (response) {
         //console.log(idnota+" - "+response);
         if (response=="Exito") {
-          console.log("Exito");
+          info();
+          //console.log("Exito");
           $d.css('background-color', '#A9F5A9');
+          //$("#status").text("Guardado");
+          $("#status").removeClass("text-warning");
+          $("#status").addClass("text-success");
         }else {
+          $("#status").text("No Guardado");
+          $("#status").removeClass("text-success");
+          $("#status").addClass("text-danger");
           $d.css('background-color', '#F5A9A9');
           console.log("zona de error");
           swal("Error!", response, "error");
