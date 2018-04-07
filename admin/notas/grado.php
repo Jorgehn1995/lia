@@ -5,13 +5,14 @@
 <html>
 <head>
   <meta charset="iso-8859-1">
-  <title><?php echo "$cole"; ?></title>
+  <?php $titulo="Notas por Grado";
+  include '../lib/header.php'; ?>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta content="Sistema para el control de notas escolares" name="description" />
   <meta content="Jorge Hernandez" name="author" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-  <link rel="shortcut icon" href="../../assets/images/favicon.ico">
+
 
   <!-- Sweet Alert css -->
   <link href="../../plugins/bootstrap-sweetalert/sweet-alert.css" rel="stylesheet" type="text/css" />
@@ -79,7 +80,7 @@
               $con=mysqli_query($conexion,$sql);
               while ($cg=mysqli_fetch_array($con)) {
                 $idg=$cg['idgrado'];
-                $grado=$cg['grado'];
+                $grado=$cg['boton'];
                 echo "<optgroup label=\"$grado\">";
                 for ($i=1; $i <=5 ; $i++) {
                   $s="sec"."$i";
@@ -149,88 +150,24 @@
       $("#grados").change(function(){
         //alert(this.value);
         var idgrado=this.value;
+        var sp=idgrado.split("-");
         var materias = 0;
+        var idg=sp[0];
+        var sec=sp[1];
         var parametros = {
-          "idgrado" : idgrado
+          "idgrado" : idg,
+          "sec":sec,
         };
         $.ajax({
           data:  parametros,
-          url:   '../json/clases.php',
+          url:   '../dinamics/notasxbloque.php',
           type:  'GET',
           beforeSend: function () {
-
+            console.log("cargando");
           },
           success:  function (response) {
-            var materias = Object.keys(response).length;
-            //alert(response[0]['nombre']);
-            //console.log(response[0]['nombre']);
-            var tabla = '<table id="datatables" class="table table-responsive table-striped table-hover" cellspacing="0" >';
-            tabla += '<thead>';
-            tabla += '<tr>';
-            tabla += '<th>Clave</th>';
-            tabla += '<th>Nombre</th>';
-            for (var i = 1; i <= materias; i++) {
-              tabla += '<th class="vText">'+response[i-1]['corto']+'</th>';
-            }
-            tabla += '<th class="vText" >Estatus</th>';
-            tabla += '<th class="vText" >Reporte</th>';
-            tabla += '</tr>';
-            tabla += '</thead>';
-            tabla += '<tbody id="tbody">';
-
-            tabla += '</tbody></table>';
-            tabla += '<div id="load" class="col-12 text-center"><img width="70px" height="70px" src="../../assets/images/load1.gif"/><h5 id="text-load">Cargando </h5></div>'
-            //alert(tabla);
-            $('#tabladedatos').html(tabla);
-            document.getElementById('table-container').style.display="block";
-            //console.log(tabla);
-            var param = {
-              "idgrado" : idgrado
-            };
-            $.ajax({
-              data:  param,
-              url:   '../json/finales.php',
-              type:  'GET',
-              beforeSend: function () {
-                document.getElementById("text-load").innerHTML="Cargando Información";
-              },
-              success:  function (finales) {
-                document.getElementById("text-load").innerHTML="Calculando Calificaciones";
-                var calum = Object.keys(finales).length;
-                //alert(response[0]['nombre']);
-                //console.log(finales[0]['nombre']);
-                //console.log(calum);
-                //console.log(materias);
-                tr = '';
-                var r ='';
-                var t = 0;
-                for (var a = 1; a <= calum; a++){
-                  tr += '<tr>';
-                  tr += '<td>'+finales[a-1]['clave']+'</td><td>'+finales[a-1]['nombre']+'</td>';
-                  for (var i = 1; i <= materias; i++) {
-                    console.log(i);
-                    l="f"+i;
-                    if (finales[a-1][l]<60) {
-                      var r ="text-danger";
-                      t=t+1;
-                    }else {
-                      var r ="";
-                    }
-
-                    tr+= '<td><p class="'+r+'" >'+finales[a-1][l]+'</p>'+'</td>';
-                  }
-                  if (t>0) {
-                    tr +='<td><span class="badge badge-danger">Reprobado</span></td>'
-                  }else {
-                    tr +='<td><span class="badge badge-success">Aprobado</span></td>'
-                  }
-                  tr += '<td><button onclick=\'location.href="report.php?id="+'+finales[a-1]['id']+'\' type="button" class="btn btn-info waves-effect waves-light m-b-5" title="Reporte academico" ><i class="ti-pencil-alt"></i></button></td>';
-                  tr += '</tr>';
-                }
-                document.getElementById('load').style.display="none";
-                $('#tbody').html(tr);
-              }
-            });
+            $("#tabladedatos").html(response);
+            $("#table-container").show(500);
           }
         });
       });

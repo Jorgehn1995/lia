@@ -195,6 +195,10 @@ require '../../assets/glib/isset.php';
   <!-- jQuery  -->
 
   <script type="text/javascript">
+  $.ajaxSetup({
+    timeout: 20000,
+    retryAfter: 2000
+  });
   function loaddata(){
     var idgrado = vars['idgrado'];
     var bloque =vars['bloque'];
@@ -428,8 +432,12 @@ require '../../assets/glib/isset.php';
 
       },
       error: function () {
-        swal("Sin Internet", "No se puede conectar a la base de datos", "error");
-        $d.css('background-color', '#F5A9A9');
+        $d.css('background-color', '#FFFF00');
+        //notifi("warning","Reconectando","Se ha perdido la conexión a la base de datos, se esta intentando reconectar");
+
+        //$('#status').text('#'+attempts+' : Failure... Retry after ' + $.ajaxSetup().retryAfter / 1000 + '  seconds');
+        setTimeout(guardar(idnota, punteo, $d), $.ajaxSetup().retryAfter);
+
       },
       success:  function (response) {
         //console.log(idnota+" - "+response);

@@ -505,6 +505,7 @@ require '../../assets/glib/isset.php';
           var msg=response[0]["hace"];
           $("#infospan").text(response[0]["datetime"]);
           nombre.text(response[0]["grado"]);
+          //console.log(response[0]["grado"]);
           boton.html(response[0]["actions"]);
           status.text(msg);
         }
@@ -516,6 +517,7 @@ require '../../assets/glib/isset.php';
     var parametros = {
       "idnota":idnota,
       "punteo":punteo,
+      "token":"asdfghkl",
     };
 
     $.ajax({

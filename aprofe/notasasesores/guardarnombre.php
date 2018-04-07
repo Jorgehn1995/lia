@@ -12,10 +12,32 @@ if ($val=="Grado") {
 //$val="4-3-5-A";
 $v=explode("-",$val);
 $idmateria=0;
-$bloque=$v[1];
-$idgrado=$v[2];
-$sec=$v[3];
-$idactividad=$v[4];
+
+$sqlasesor="SELECT * FROM `asesores` WHERE idpersonal='$idusuario' LIMIT 1";
+$query=mysqli_query($conexion,$sqlasesor);
+if ($query->num_rows==0) {
+  exit('<div class="">
+    <div class="text-center">
+      <br>
+      <img src="../../assets/images/nodatafound2.png" width="80" height="auto" alt=""><br>
+      <h3 class="text-muted">Sin Grado Asignado</h3>
+      <div id="icon">
+        <h5 class="text-muted">No tienes un grado asignado para esta sección </h5>
+      </div>
+    </div>
+  </div>');
+}else {
+  while ($g=mysqli_fetch_array($query)) {
+    $bloque=$bloqueencurso;
+    $idgrado=$g['idgrado'];
+    $sec=$g['seccion'];
+    $idactividad=$v[4];
+    $id="0-".$bloqueencurso."-".$g['idgrado']."-".$g['seccion'];
+  }
+}
+
+
+
 $nombre=d("nombre");
 $sql="SELECT * FROM `nombreactividades` WHERE idcole='$idcole' AND idgrado='$idgrado' AND seccion='$sec' AND idbloque='$bloque' AND idactividad='$idactividad' LIMIT 1";
 $query=mysqli_query($conexion,$sql);

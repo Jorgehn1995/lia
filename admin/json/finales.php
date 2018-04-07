@@ -19,32 +19,47 @@ function finales($seccion, $idgrado, $idcole){
     $datos=data($id,$idcole,3);
     if (isset($data)) {
       $agg = array('id' => $id, 'clave' => $datos['clave'], 'nombre' => utf8_encode($datos['apellidos'].", ".$datos['nombres']), 'clases' => $datos['cc']);
-      for ($i=1; $i <=$datos['cc'] ; $i++) {
-        $fin=0;
-        $sq="SELECT * FROM `cuadro` WHERE idcole='$idcole' AND idalumno='$id' AND idmateria='$i'";
-        $ccon=mysqli_query($conexion,$sq);
-        while ($cuadro=mysqli_fetch_array($ccon)) {
-          $fin=$fin+$cuadro['porcentaje'];
+
+      $sentencia2 = "SELECT * FROM `materias` INNER JOIN `nombrematerias` ON materias.idnombremateria=nombrematerias.idnombremateria WHERE materias.idcole='$idcole' AND materias.idgrado='$idgrado' AND materias.seccion='$seccion' ORDER BY num ASC";
+      $resultado2 = mysqli_query($conexion,$sentencia2);
+      if(!$resultado2){
+        errorsql($conexion);
+      }else{
+        while( $dd=mysqli_fetch_array($resultado2)){
+          $fin=0;
+          $idmat=$dd['idmateria'];
+          $sq="SELECT *, SUM(obtenido) as tt FROM `notas` WHERE idcole='$idcole' AND idalumno='$id' AND idmateria='$idmat' AND idbloque='1' ";
+          $ccon=mysqli_query($conexion,$sq);
+          while ($cuadro=mysqli_fetch_array($ccon)) {
+            $fin=$fin+$cuadro['tt'];
+          }
+          $tf=$fin;
+          $c="f".$idmat;
+          $agg[$c]=$tf;
         }
-        $tf=$fin;
-        $c="f".$i;
-        $agg[$c]=$tf;
       }
       array_push($data, $agg);
     }else {
       $agg = array('id' => $id, 'clave' => $datos['clave'], 'nombre' => utf8_encode($datos['apellidos']." ".$datos['nombres']), 'clases' => $datos['cc']);
-      for ($i=1; $i <=$datos['cc'] ; $i++) {
-        $fin=0;
-        $sq="SELECT * FROM `cuadro` WHERE idcole='$idcole' AND idalumno='$id' AND idmateria='$i'";
-        $ccon=mysqli_query($conexion,$sq);
-        while ($cuadro=mysqli_fetch_array($ccon)) {
-          $fin=$fin+$cuadro['total'];
+      $sentencia2 = "SELECT * FROM `materias` INNER JOIN `nombrematerias` ON materias.idnombremateria=nombrematerias.idnombremateria WHERE materias.idcole='$idcole' AND materias.idgrado='$idgrado' AND materias.seccion='$seccion' ORDER BY num ASC";
+      $resultado2 = mysqli_query($conexion,$sentencia2);
+      if(!$resultado2){
+        errorsql($conexion);
+      }else{
+        while( $dd=mysqli_fetch_array($resultado2)){
+          $fin=0;
+          $idmat=$dd['idmateria'];
+          $sq="SELECT *, SUM(obtenido) as tt FROM `notas` WHERE idcole='$idcole' AND idalumno='$id' AND idmateria='$idmat' AND idbloque='1' ";
+          $ccon=mysqli_query($conexion,$sq);
+          while ($cuadro=mysqli_fetch_array($ccon)) {
+            $fin=$fin+$cuadro['tt'];
+          }
+          $tf=$fin;
+          $c="f".$idmat;
+          $agg[$c]=$tf;
         }
-        $tf=$fin/$datos['cc'];
-        $c="f".$i;
-        $agg[$c]=$tf;
       }
-      array_push($data, $data);
+      array_push($data, $agg);
     }
   }
   $arreglo=$data;

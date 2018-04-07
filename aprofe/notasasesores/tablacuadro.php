@@ -81,7 +81,12 @@ while ($a=mysqli_fetch_array($query)) {
   $renombrar=$a['renombrar'];
   $asesor=$a['asesor'];
   if ( $asesor==1) {
-    echo '<th class="vtext" ><a href="javascript:void(0)" class="actividad" data-toggle="modal" data-target="#con-close-modal" id="'.$idmodelo.'"><p class="rotatetext">'.$nombre.'</p></a></th>';
+    if ($renombrar==1) {
+      echo '<th class="vtext" ><a href="javascript:void(0)" class="actividad" data-toggle="modal" data-target="#con-close-modal" id="'.$idmodelo.'"><p class="rotatetext">'.$nombre.'</p></a></th>';
+    }else {
+      echo '<th class="vtext" ><p class="rotatetext">'.$nombre.'</p></th>';
+    }
+
     //echo '<a href="javascript:void(0)"></a>';
   }else {
     echo '<th class="vtext"  ><p class="rotatetext">'.$nombre.'</p></th>';
