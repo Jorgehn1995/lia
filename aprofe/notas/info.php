@@ -37,13 +37,27 @@ if ($query) {
 }
 
 $datos=array();
-
+$sql="SELECT * FROM `materias` INNER JOIN `nombrematerias` ON materias.idnombremateria=nombrematerias.idnombremateria WHERE nombrematerias.idnombremateria='$idnombremateria' AND materias.idgrado='$idgrado' AND materias.seccion='$sec'  AND materias.idprofesor='$idusuario'";
+$con=mysqli_query($conexion,$sql);
+if ($con->num_rows==0) {
+  $nclase="";
+}
+while ($cg=mysqli_fetch_array($con)) {
+  if ($cg['nombreficha']=="") {
+    $nombre=$cg['nombre'];
+  }else {
+    $nombre=$cg['nombreficha'];
+  }
+  $idnm=$cg['idnombremateria'];
+  $nclase=$nombre;
+}
 $agg = array(
   'r' => $r,
   'datetime'=> $hora,
   'hace'=>$msg,
   'grado'=>$grado,
-  'actions'=>'<button type="button" class="btn btn-outline-secondary btn-printer" name="button"><i class="ti-printer"></i> Imprimir PDF</button>',
+  'clase'=>utf8_encode($nclase),
+  'actions'=>'<button type="button" class="btn btn-outline-light btn-change" name="button">Selecionar Otro Cuadro</button><button type="button" class="btn btn-outline-light btn-printer" name="button"><i class="ti-printer"></i> Imprimir PDF</button>',
   'type'=>'error'
 );
 array_push($datos, $agg);

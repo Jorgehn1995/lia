@@ -61,10 +61,10 @@
       <div class="head">
         <div class="row">
           <div class="col-md-12">
-            <h2 class="text-light"><b>Inicio</b> <small><small>> Perfil Profesores</small></small> </h2>
+            <h2 class="text-light"><b>Inicio</b> <small><small>> Perfil Alumnos</small></small> </h2>
           </div>
           <div class="col-md-12">
-            <p class="text-light">Califica, guarda información y accede a ella cuando quieras</p>
+            <p class="text-light">Accede a tus calificaciones, entrega tareas y revisa tus pagos desde donde quieras</p>
           </div>
         </div>
       </div>

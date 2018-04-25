@@ -314,5 +314,5 @@ if ($resultado) {
 
 //******************************************************
 
-$pdf->Output("IMED Bloque "."$bloque - $ngrado $sec - $nclase".".pdf",'I');
+$pdf->Output("$abrcole Bloque "."$bloque - $ngrado $sec - $nclase".".pdf",'I');
 ?>

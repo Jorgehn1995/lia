@@ -13,24 +13,15 @@ class PDF extends TCPDF{
 		global $fpshared,$ncole,$abrcole,$lemacole,$dominio;
 		$this->Ln(10);
 		$this->Image($fpshared,10,7,20,20,'JPG');
-		$this->Image("images/logoescudo.jpg",180,8,19,19,'JPG');
 		$this->Cell(190,7,$ncole." ".$abrcole,0,0,'C');
-		$this->Ln(3);
+		$this->Ln(7);
 		$sp=4;
-		$fontname = TCPDF_FONTS::addTTFfont(K_PATH_FONTS . 'ITCEDSCR.TTF', 'TrueTypeUnicode', '', 8);
-		$this->SetFont($fontname, '', 16, '', false);
-		$this->Ln($sp);
-
-		$this->Cell(190,3,$lemacole,0,0,'C');
-
-		$this->Ln($sp);
 		$this->SetFont("Helvetica","",8);
-		$this->Ln(3);
 		$this->Cell(190,3,"San Luis Jilotepeque, Jalapa. Guatemala.",0,0,'C');
-
 		$this->Ln($sp);
 		$this->Cell(190,3,"Ciclo Escolar ".date('Y'),0,0,'C');
-
+		$this->Ln($sp);
+		$this->Cell(190,3,$dominio,0,0,'C');
 	}
 	function Footer(){
 		$this->SetY(-15);
@@ -49,7 +40,7 @@ $pdf->SetCreator("LIA System");
 $pdf->SetAuthor('imed/inebco');
 $pdf->SetTitle('Ficha de calificaciones');
 $pdf->SetSubject(' REGISTROS PDF');
-$pdf->SetMargins(10,30,10,TRUE);
+$pdf->SetMargins(10,25,10,TRUE);
 $pdf->AddPage();
 $pdf->SetAutoPageBreak(TRUE,PDF_MARGIN_BOTTOM);
 
@@ -124,8 +115,7 @@ $pdf->SetFont("times","B",8);
 $pdf->Cell(10,13,"40%",1,0,'C',TRUE);
 $pdf->Ln(13);
 $if=0;
-$cp=0;
-$cn=0;
+
 for ($i=1; $i <= $cc ; $i++) {
 	$mfancho=8;
 	$pdf->SetFillColor(255, 255, 255);
@@ -187,10 +177,6 @@ for ($i=1; $i <= $cc ; $i++) {
 						$ib1p=$ib1*0.15;
 						$ib1p=round($ib1p,0);
 						$if=$if+$ib1p;
-						$cn=$cn+$ib1;
-						if ($ib1<60) {
-							$cp=$cp+1;
-						}
 					}
 
 				}
@@ -198,7 +184,6 @@ for ($i=1; $i <= $cc ; $i++) {
 			//*********************************
 
 		}
-
 		if ($ib1<60) {
 			$pdf->SetFillColor(255, 255, 255);
 			$pdf->SetTextColor(255, 0, 0);
@@ -218,73 +203,47 @@ for ($i=1; $i <= $cc ; $i++) {
 	$pdf->Ln($mfancho);
 }
 $r=$pdf->GetY()+3;
-$pdf->Ln(10);
-$cnt=$cn/$cc;
-if ($cp>0) {
-	$msgl2="¡Debe Mejorar! ";
-	$color=255;
-	$c2=0;
-}else {
-	if ($cnt>90) {
-		$msgl2="Excelente ¡Felicitaciones!";
-		$color=0;
-		$c2=190;
-	}else {
-		$msgl2="¡Felicitaciones! ";
-		$color=0;
-		$c2=0;
-	}
-
-}
+$pdf->Ln(18);
+$pdf->Ln(18);
 $urlfile="../../assets/qr/temp/$codigo.png";
 $contenido = "$dominio/ext/?id=$codigo"; //Texto
 
 if (file_exists($urlfile)) {
 	unlink($urlfile);
 }
-//Declaramos una carpeta temporal para guardar la imagenes generadas
-$dir = '../../assets/qr/temp/';
+	//Declaramos una carpeta temporal para guardar la imagenes generadas
+	$dir = '../../assets/qr/temp/';
 
-//Si no existe la carpeta la creamos
-if (!file_exists($dir))
-mkdir($dir);
+	//Si no existe la carpeta la creamos
+	if (!file_exists($dir))
+	mkdir($dir);
 
-//Declaramos la ruta y nombre del archivo a generar
-$filename = $dir.$codigo.'.png';
-//Parametros de Condiguración
-$tamaño = 10; //Tamaño de Pixel
-$level = 'L'; //Precisión Baja
-$framSize = 4; //Tamaño en blanco
+	//Declaramos la ruta y nombre del archivo a generar
+	$filename = $dir.$codigo.'.png';
+	//Parametros de Condiguración
+	$tamaño = 10; //Tamaño de Pixel
+	$level = 'L'; //Precisión Baja
+	$framSize = 4; //Tamaño en blanco
 
-//Enviamos los parametros a la Función para generar código QR
-QRcode::png($contenido, $filename, $level, $tamaño, $framSize);
+	//Enviamos los parametros a la Función para generar código QR
+	QRcode::png($contenido, $filename, $level, $tamaño, $framSize);
 
-$pdf->Cell(25,6,"OBSERVACIONES: ",0);
-$pdf->Cell(152,0,"",0);
-$pdf->Ln(0);
-$pdf->Cell(33,6,"",0);
-$pdf->Cell(5,4,"  ___________________________________________________________________________________________________________",0);
-//$msgl2="  "; //MENSAJE EN LINEA 2
-$pdf->SetFont("times","BI",12);
-$pdf->Ln(-2);
-$pdf->Cell(45,6," ",0);
-$pdf->SetTextColor($color,$c2,0);
-$pdf->Cell(152,4,$msgl2,0);
-$pdf->SetTextColor(0, 0, 0);
-$pdf->SetFont("times","",8);
-$pdf->Ln(12);
-$pdf->Cell(93,4,"f._____________________________________",0,0,'C');
-$pdf->Cell(93,4,"f._____________________________________",0,0,'C');
-$pdf->Ln(-2);
-$fontname = TCPDF_FONTS::addTTFfont(K_PATH_FONTS . 'ITCEDSCR.TTF', 'TrueTypeUnicode', '', 8);
-$pdf->SetFont($fontname, '', 14, '', false);
-$pdf->Cell(93,4,"Lessly Xiomara Cerna Arita",0,0,'C');
-$pdf->SetFont("times","",8);
-$pdf->Ln(6);
-$pdf->Cell(93,4,"Profa. Lessly Xiomara Cerna Arita de G",0,0,'C');
-$pdf->Cell(93,4,"Nombre del padre o encargado",0,0,'C');
-$pdf->Ln(6);
-$pdf->Cell(93,4,"Directora del Establecimiento",0,0,'C');
+$pdf->SetFont("times","",10);
+$pdf->Cell(93,4,"f._________________________________________",0,0,'C');
+$pdf->Ln(4);
+$pdf->Cell(93,4,"Lic. Tomas Ramiro López Matías",0,0,'C');
+$pdf->Ln(4);
+$pdf->Cell(93,4,"Director del Establecimiento",0,0,'C');
+$pdf->Ln(10);
+
+$pdf->Image($urlfile,133,$r,30,30,'PNG');
+$pdf->Ln(-18);
+$pdf->SetFont("times","",6);
+$pdf->Cell(93,4,"",0,0,'C');
+$pdf->MultiCell(92,4,"Puede verificar las notas del alumnos ingresando a $dominio en la sección 'Padres' con el codigo del carnet del alumno. o ingresando al siguiente link: ",0,"L",'C');
+$pdf->Ln(4);
+$pdf->Cell(93,4,"",0,0,'C');
+$pdf->Cell(92,4,$contenido,0,0,'C');
 /////************************************************Ciclo de generar ficha
 $nombrearchivo="$na-$abrcole-$datetime.pdf";
 $pdf->Output($nombrearchivo,'I');

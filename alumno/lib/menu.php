@@ -92,11 +92,16 @@
           <a  href="#"><i class=" ti-write "></i>Documentos</a>
         </li>-->
         <li class="has-submenu">
-          <a href="#"><i class=" ti-view-grid "></i>Registros</a>
+          <a href="#"><i class="  ti-pencil "></i>Tareas</a>
+        </li>
+        <li class="has-submenu">
+          <a href="#"><i class="ti-write  "></i>Tus Calificaciones</a>
           <ul class="submenu">
-            <li><a href="../notas/">Cuadros de Registro</a></li>
-            <li><a href="../notasxactividad/">Calificar Actividad</a></li>
-            <li><a href="../notasasesores/">Cuadros de Asesor</a></li>
+            <li><a href="#">Bloque 1</a></li>
+            <li><a href="#">Bloque 2</a></li>
+            <li><a href="#">Bloque 3</a></li>
+            <li><a href="#">Bloque 4</a></li>
+            <li><a href="#">Ciclo Escolar</a></li>
 
             <!--<li><a href="#">Desempeño del alumno</a></li>-->
             <!---<li><a href="#">No Promovidos</a></li>-->
@@ -108,7 +113,7 @@
       </li>-->
 
       <li class="has-submenu">
-        <a href="../nube/"><i class="  ti-cloud "></i>Nube</a>
+        <a href="#"><i class="  ti-wallet "></i>Pagos</a>
       </li>
 
     </ul>

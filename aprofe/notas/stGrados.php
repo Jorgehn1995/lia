@@ -6,10 +6,11 @@ $g=d("idgrado");
 $s=d("sec");
 echo '<label class="control-label" for="">Selecione un grado</label>
 <select class="select2 form-control" id="stGrados" name="">';
-$sql="SELECT * FROM `grados` WHERE $idcole='$idcole'";
+$sql="SELECT * FROM `grados` WHERE idcole='$idcole'";
 $query=mysqli_query($conexion,$sql);
 while ($a=mysqli_fetch_array($query)){
   for ($i=1; $i <=5 ; $i++) {
+    $idg=$a["idcole"];
     $n="sec".$i;
     if ($a[$n]!="") {
       if ($a['idgrado']==$g && $a[$n]==$s) {

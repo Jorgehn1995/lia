@@ -7,7 +7,13 @@ $seccion="A";
 $idbloque="1";
 $idgrado=dx("idgrado");
 $seccion=dx("sec");
-$idbloque=$bloqueencurso;
+$bloque=d("b");
+if ($bloque=="") {
+    $idbloque=$bloqueencurso;
+}else {
+  $idbloque=$bloque;
+}
+
 
 
 echo '<table style="word-wrap: break-word" border="1" class="table table-bordered table-hover">
@@ -77,7 +83,7 @@ while ($a=mysqli_fetch_array($query)) {
         echo '<td>'.$rt.'</td>';
       }
     }
-    echo '<td><button type="button" class="btn btn-sm btn-success btn-ficha" name="button"><i class=" ti-notepad "></i></button></td>';
+    echo '<td><button type="button" data-id="'.$idalumno.'" class="btn btn-sm btn-success btn-ficha" name="button"><i class=" ti-notepad "></i></button></td>';
   }
   echo '</tr>';
 }

@@ -82,7 +82,26 @@ require '../../assets/glib/isset.php';
     background-color: white;
   }
 
-
+  .back-to-top {
+    background: none;
+    margin: 10;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    z-index: 99;
+    display: none;
+    text-decoration: none;
+    color: #28d449;
+    background-color: #0000;
+  }
+  .back-to-top:hover{
+    color: #10ab2e;
+  }
+  .back-to-top i {
+    font-size: 60px;
+  }
   </style>
 </head>
 
@@ -98,18 +117,22 @@ require '../../assets/glib/isset.php';
     <div class="head">
       <div class="row">
         <div class="col-md-12">
-          <h2 class="text-light"><b>Registros</b> <small><small> > Bloque I</small></small> </h2>
+          <h2 class="text-light"><b>Registros</b> <small><small> > Bloque <?php echo "$bloqueencurso"; ?></small></small> </h2>
         </div>
         <div class="col-md-12">
-          <p class="text-light">Aqui encontraras tus cuadros de registro de calificaciones</p>
-        </div>
-        <div class="col-md-12">
-          <div class="form-group">
-            <button type="button" class="btn btn-outline-light btn-change" name="button">Selecionar Cuadro</button>
-          </div>
-          <div class="form-group">
+          <p class="text-light" id="ng">Aqui encontraras tus cuadros de registro de calificaciones</p>
 
-          </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+              <div class="btn-group btn-sm" id="actions">
+                <button type="button" class="btn btn-outline-light btn-change" name="button">Selecionar Cuadro</button>
+
+              </div>
+            </div>
+
+
+
         </div>
       </div>
     </div>
@@ -125,9 +148,9 @@ require '../../assets/glib/isset.php';
               <div class="col-md-5">
                 <h4 class="m-t-0 m-b-0 header-title"><b>Información del Grado</b></h4>
                 <hr>
-                <p class="text-muted" id="ng">Cargando informacion del grado...</p>
+                <p class="text-muted" id="ngg">Cargando informacion del grado...</p>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4 " style="display:none;">
                 <h4 class="m-t-0 m-b-0 header-title"><b>Estado</b></h4>
                 <hr>
                 <p class="text-muted " id="status">Conectando...</p>
@@ -135,7 +158,7 @@ require '../../assets/glib/isset.php';
               <div class="col-md-3">
                 <h4 class="m-t-0 m-b-0 header-title"><b>Acciones</b></h4>
                 <hr>
-                <div class="form-group" id="actions">
+                <div class="form-group" id="actionss">
 
                 </div>
               </div>
@@ -246,7 +269,11 @@ require '../../assets/glib/isset.php';
       </div>
     </div>
   </div><!-- /.modal -->
+  <a href="#" class="back-to-top" style="display: none;">
 
+    <i id="iconsave" data-toggle="tooltip" data-placement="top" title="Cargando información" class="fa fa-check-circle"></i>
+
+  </a>
   <!-- Footer -->
   <?php
   include '../lib/foo.php';
@@ -324,7 +351,7 @@ require '../../assets/glib/isset.php';
     $.Notification.autoHideNotify(tipo, 'top right', titulo, msg);
   }
   function cargarcuadro(id){
-    $(".inforrow").show(500);
+    //$(".inforrow").show(500);
     var id2 = id ;
     var parametros = {
       "id":id2
@@ -335,7 +362,7 @@ require '../../assets/glib/isset.php';
       type:  'GET',
       beforeSend: function () {
         $("#ng").text("Cargando...");
-        $("#actions").html("Cargando...");
+        $("#actions").html("<p class='text-light' id='ng'>Cargando...</p>");
         $("#status").text("Cargando...");
 
         var load='<div class="">'+
@@ -492,8 +519,10 @@ require '../../assets/glib/isset.php';
       beforeSend: function () {
         $("#ng").text("Cargando...");
         $("#infospan").text("Obteniendo Información...");
+        $("#iconsave").attr('data-original-title',"Obteniendo Información...");
         //$("#actions").html("Cargando...");
         $("#status").text("Cargando...");
+
       },
       error: function () {
 
@@ -502,11 +531,14 @@ require '../../assets/glib/isset.php';
       },
       success:  function (response) {
         if (response[0]["r"]) {
-          var msg=response[0]["hace"];
+          var msg="Ultima vez guardado el: "+response[0]["datetime"];
           $("#infospan").text(response[0]["datetime"]);
-          nombre.text(response[0]["grado"]);
+          var materias =" > "+response[0]["clase"];
+          nombre.text(response[0]["grado"]+materias);
           //console.log(response[0]["grado"]);
           boton.html(response[0]["actions"]);
+          $("#iconsave").attr('data-original-title',msg);
+          $(".back-to-top").show(500);
           status.text(msg);
         }
       },
@@ -525,7 +557,10 @@ require '../../assets/glib/isset.php';
       url:   '../ajax/insertnotas.php',
       type:  'GET',
       beforeSend: function () {
-        //info();
+        $("#iconsave").removeClass("fa-check-circle  fa-times");
+        $("#iconsave").addClass(" fa-refresh fa-spin");
+        $(".back-to-top").css('color', '#e5e603');
+        $("#iconsave").attr('data-original-title',"Guardardando...");
       },
       error: function () {
         //swal("Sin Internet", "No se puede conectar a la base de datos", "error");
@@ -535,6 +570,11 @@ require '../../assets/glib/isset.php';
         //$('#status').text('#'+attempts+' : Failure... Retry after ' + $.ajaxSetup().retryAfter / 1000 + '  seconds');
         setTimeout(guardar(idnota, punteo, $d), $.ajaxSetup().retryAfter);
         $("#status").text("Reconectando y Guardardando...");
+        $("#iconsave").removeClass("fa-check-circle  fa-times");
+        $("#iconsave").addClass(" fa-refresh fa-spin");
+
+        $("#iconsave").attr('data-original-title',"Reconectando y Guardardando...");
+        $(".back-to-top").css('color', '#e5e603');
         $("#status").removeClass("text-success");
         $("#status").addClass("text-warning");
         //guarda(idnota,punteo,$d);
@@ -548,6 +588,11 @@ require '../../assets/glib/isset.php';
           //$("#status").text("Guardado");
           $("#status").removeClass("text-warning");
           $("#status").addClass("text-success");
+          $("#iconsave").removeClass(" fa-refresh fa-spin fa-times");
+          $("#iconsave").addClass("fa-check-circle ");
+
+          $(".back-to-top").css('color', '#28d449');
+
         }else {
           $("#status").text("No Guardado");
           $("#status").removeClass("text-success");
@@ -709,6 +754,9 @@ require '../../assets/glib/isset.php';
       cargarcuadro(loadkey);
     }
   }
+  $("#iconsave").click(function(){
+    $('html, body').animate({scrollTop:350},500);
+  });
   $('body').on("change",".datagrid", function(){
     var table = $('#cuadro').DataTable();
     var obtenido =NaN2Zero(parseFloat($(this).val()));

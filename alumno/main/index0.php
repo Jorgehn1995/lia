@@ -11,7 +11,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
   <!-- App css -->
-  <link href="../../plugins/select2/select2.css" rel="stylesheet" type="text/css" />
   <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
   <link href="../../assets/css/icons.css" rel="stylesheet" type="text/css" />
   <link href="../../assets/css/styleprofe.css" rel="stylesheet" type="text/css" />
@@ -68,13 +67,13 @@
           </div>
         </div>
       </div>
-      <div class="alert alert-success alert-dismissable" style="display:none;">
+      <div class="alert alert-success alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
         Se han añadido las siguientes <a href="#" class="alert-link">funciones</a>:
         <ul>
-          <li style="display:none;">Registro de inicio de sesión</li>
-          <li >Seguimiento sobre registro de notas</li>
-          <li style="display:none;">Ver ingreso de notas de asesor</li>
+          <li>Registro de inicio de sesión</li>
+          <li>Seguimiento sobre registro de notas</li>
+          <li>Ver ingreso de notas de asesor</li>
         </ul>
       </div>
       <div class="container-fluid">
@@ -84,11 +83,11 @@
         <!-- end page title end breadcrumb -->
         <div class="row" >
           <!-- CHAT -->
-          <div class="col-lg-4" style="display:none;">
+          <div class="col-lg-4">
             <div class="card-box">
               <h4 class="m-t-0 m-b-20 header-title"><b>Registro de Inicio de Sesión</b></h4>
 
-              <div class="chat-conversation" >
+              <div class="chat-conversation" id="classdiv">
                 <ul class="conversation-list c-list nicescroll" >
 
                   <li class="clearfix ">
@@ -125,7 +124,28 @@
               <h4 class="m-t-0 m-b-20 header-title"><b>Registro de Notas</b></h4>
 
               <div class="chat-conversation">
-                <ul class="conversation-list nicescroll" id="classdiv">
+                <ul class="conversation-list nicescroll">
+
+                  <li class="clearfix ">
+
+                    <div class="conversation-text">
+                      <div class="ctext-wrap">
+                        <i class="text-success">Nota Agregada</i>
+                        <i class="text-muted"><small>hace 2 horas</small></i>
+                        <p>
+                          Haz agregado <b>3 pts</b> a  Jorge Hernandez en la clase <b>Tecnologias de la informacion y la comunicacion</b>
+                        </p>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="pull-right">
+                              <a href="#" class="text-success"><b>Ver</b></a>
+                              <a href="#" class="text-danger"><b>Deshacer</b></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
 
                 </ul>
 
@@ -133,79 +153,47 @@
             </div>
 
           </div> <!-- end col-->
-          <div class="col-md-8">
-            <div class="col-lg-12">
-              <div class="card-box">
-                <h4 class="m-t-0 m-b-20 header-title"><b>Listado de Asistencia</b></h4>
-                <div class="row">
-                  <div class="col-md-4" >
-                    <select class="form-control select2" id="size" name="">
-                      <option value="v">Vertical</option>
-                      <option value="h">Horizontal</option>
-                    </select>
-                  </div>
-                  <div class="col-md-4" id="divmes">
-                    <select class="form-control select2" id="mes" name="">
-                      <?php
-                      setlocale(LC_ALL, 'es_GT');
-                      date_default_timezone_set("America/Guatemala");
-                      $meses=array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre");
-                      for ($i=1; $i <=12 ; $i++) {
-                        $ma=$i-1;
-                        $mes=date("m")-1;
-                        if ($ma==$mes) {
-                          $s="selected";
-                        }else {
-                          $s="";
-                        }
-                        echo "<option $s value='$i'>".$meses[$ma]."</option>";
-                        $s="";
-                      }
-                      ?>
-                    </select>
-                  </div>
-                  <div class="col-md-4">
-                    <button type='button' class='gen1 add btn btn-simple btn-success btn-icon' data-toggle='modal' data-target='#datos' title='Descargar' ><i class=' mdi mdi-file-pdf  '></i> Descargar Listados</button>
-                  </div>
-                </div>
+          <div class="col-lg-4">
+            <div class="card-box">
+              <h4 class="m-t-0 m-b-20 header-title"><b>Registro de Asesores</b></h4>
+
+              <div class="chat-conversation">
+                <ul class="conversation-list nicescroll">
+
+                  <li class="clearfix ">
+
+                    <div class="conversation-text">
+                      <div class="ctext-wrap">
+                        <i class="text-success">Nota Agregada</i>
+                        <i class="text-muted">hace 2 horas</i>
+                        <p>
+                          Edwin ha agregado <b>3 pts</b> a  Jorge Hernandez en la clase por la actiidad disfrases
+                        </p>
+                        <div class="row">
+
+                          <div class="col-md-12">
+                            <div class="pull-right">
+                              <a href="#" class="text-success"><b>Ver</b></a>
+                              <a href="#" class="text-danger"><b>Deshacer</b></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                </ul>
 
               </div>
+            </div>
 
-            </div> <!-- end col-->
-            <div class="col-lg-12">
-              <div class="card-box">
-                <h4 class="m-t-0 m-b-20 header-title"><b>Registros de Calificaciones</b></h4>
-                <div class="row">
-                  <div class="col-md-8" >
-                    <select class="form-control select2" id="br" name="">
-                      <?php
-                        for ($i=1; $i <=4 ; $i++) {
-                          $s="";
-                          if ($i==$bloqueencurso) {
-                            $s="selected";
-                          }
-                          echo '<option '.$s.' value="'.$i.'">Bloque '.$i.'</option>';
-                        }
-                       ?>
-
-                    </select>
-                  </div>
-                  <div class="col-md-4">
-                    <button type='button' class='gen2 add btn btn-simple btn-success btn-icon' data-toggle='modal' data-target='#datos' title='Descargar' ><i class=' mdi mdi-file-pdf  '></i> Descargar Registros</button>
-                  </div>
-                </div>
-
-              </div>
-
-            </div> <!-- end col-->
-          </div>
-
+          </div> <!-- end col-->
 
         </div>
       </div> <!-- end container -->
     </div>
     <!-- end wrapper -->
-<iframe id="iframe" src="" style="display:none;" width="100%" height="600px"></iframe>
+
 
     <!-- Footer -->
     <?php
@@ -216,27 +204,6 @@
     <!-- End Footer -->
     <!-- jQuery  -->
     <script type="text/javascript">
-    function asistencia(){
-      var mes=$("#mes").val();
-      var t=$("#size").val();
-        var url="../listados/asistencia.php?m="+mes+"&size="+t;
-        //$.get(url);
-        $("#iframe").attr("src", url);
-
-    }
-    $(".gen1").on('click',function(){
-      asistencia();
-    });
-    function registros(){
-      var bloque=$("#br").val();
-        var url="../listados/?b="+bloque;
-        //$.get(url);
-        $("#iframe").attr("src", url);
-
-    }
-    $(".gen2").on('click',function(){
-      registros();
-    });
     function cargarmaterias(){
       var parametros = {
         "idgrado" : "idgrado",
@@ -245,21 +212,8 @@
       };
       $.ajax({
         data:  parametros,
-        url:   'lognotas.php',
+        url:   'clases.php',
         type:  'POST',
-        beforeSend: function () {
-          var load='<div class="">'+
-            '<div class="text-center">'+
-              '<br>'+
-              '<img src="../../assets/images/loadcustom.gif" width="80" height="auto" alt=""><br>'+
-              '<h3 class="text-muted">Cargando Alumnos</h3>'+
-              '<div id="icon">'+
-                '<h5 class="text-muted">Esto puede tardar unos minutos</h5>'+
-              '</div>'+
-            '</div>'+
-          '</div>';
-          $('#classdiv').html(load);
-        },
         success: function (response) {
           $("#classdiv").html(response);
         }
@@ -275,7 +229,7 @@
       }
     });
     $(document).ready(function(){
-      cargarmaterias();
+      //cargarmaterias();
 
     });
   </script>

@@ -32,6 +32,39 @@ while ($w=mysqli_fetch_array($r)) {
       break;
     }
 }
+if ($f==0) {
+  $sql="SELECT * FROM `alumnos` WHERE codigo='$usuario'";
+  $r=mysqli_query($conexion,$sql);
+  while ($w=mysqli_fetch_array($r)) {
+      $idasociado=$w['idalumno'];
+      $usuario=$w['codigo'];
+      $idcole=$w['idcole'];
+      $modulo='L';
+      $activo=$w['activo'];
+      if ($activo=='Activo') {
+        $activo=1;
+      }else {
+        $activo=0;
+      }
+      $pass=$w['pass'];
+      if ($pass=='') {
+        if ($w['na']==$contra) {
+          $f=1;
+        }else {
+          $f=0;
+        }
+      }else {
+        if ($pass==$contra) {
+          $f=1;
+        }else {
+          $f=0;
+        }
+      }
+      if ($f==1) {
+        break;
+      }
+  }
+}
 if ($f>0) {
   if ($activo==0) {
     echo "disabled";
