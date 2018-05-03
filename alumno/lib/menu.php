@@ -46,11 +46,11 @@
                 <h5 class="text-overflow"><small class="text-white"><?php echo "$abrcole"; ?></small> </h5>
               </div>
 
-
+<!-- 
               <a href="../setpass/" class="dropdown-item notify-item">
                 <i class="ti-key"></i> <span>Contraseña</span>
               </a>
-            <!--  <a href="javascript:void(0);" class="dropdown-item notify-item">
+             <a href="javascript:void(0);" class="dropdown-item notify-item">
                 <i class="ti-settings"></i> <span>Ajustes</span>
               </a>
               <a href="javascript:void(0);" class="dropdown-item notify-item">
@@ -91,7 +91,7 @@
           <!--<li class="has-submenu">
           <a  href="#"><i class=" ti-write "></i>Documentos</a>
         </li>-->
-        <li class="has-submenu">
+        <!--<li class="has-submenu">
           <a href="#"><i class="  ti-pencil "></i>Tareas</a>
         </li>
         <li class="has-submenu">
@@ -103,19 +103,16 @@
             <li><a href="#">Bloque 4</a></li>
             <li><a href="#">Ciclo Escolar</a></li>
 
-            <!--<li><a href="#">Desempeño del alumno</a></li>-->
-            <!---<li><a href="#">No Promovidos</a></li>-->
+
           </ul>
         </li>
 
-      <!---  <li class="has-submenu">
-        <a href="../apoyo/"><i class=" ti-notepad "></i>Material de Apoyo</a>
-      </li>-->
+
 
       <li class="has-submenu">
         <a href="#"><i class="  ti-wallet "></i>Pagos</a>
       </li>
-
+-->
     </ul>
 
     <!-- End navigation menu -->

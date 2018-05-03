@@ -138,7 +138,7 @@ for ($i=1; $i <= $cc ; $i++) {
 		$ib1 = 100;
 		$ib1p = 15;
 
-		if ($e>$bloqueencurso) {
+		if ($e>$bloque) {
 			$ib1="";
 			$ib1p="";
 		}else {
@@ -204,6 +204,7 @@ for ($i=1; $i <= $cc ; $i++) {
 			$pdf->SetTextColor(255, 0, 0);
 			$pdf->SetFont("courier","BI",12);
 		}
+
 		$pdf->Cell(10,$mfancho,$ib1,1,0,'C',TRUE);
 		$pdf->SetFont("courier","",10);
 		$pdf->SetTextColor(0, 0, 0);

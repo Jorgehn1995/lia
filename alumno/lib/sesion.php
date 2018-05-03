@@ -91,8 +91,7 @@ function cero($var){
     return $var;
   }
 }
-function ago($time)
-{
+function ago($time){
   $periodos = array("segundo", "minuto", "hora", "día", "semana", "mes", "año", "década");
   $duraciones = array("60","60","24","7","4.35","12","10");
   $now = time();
@@ -111,5 +110,32 @@ function ago($time)
   return "hace $diferencia ".utf8_encode($periodos[$j]);
   //echo ago(strtotime("2017-12-25"));
 }
-//require "../../assets/glib/isset.php";
+function get_query($campo){
+  global $idusuario,$conexion,$usuario;
+  $sql="SELECT * FROM alumnos WHERE codigo='$usuario'";
+  $query=mysqli_query($conexion,$sql);
+  while ($a=mysqli_fetch_array($query)) {
+    $ask=$a[$campo];
+  }
+  return $ask;
+}
+function get_autorization($bloque){
+  global $bloqueencurso;
+  if ($bloque>$bloqueencurso) {
+    exit('<div class="">
+      <div class="text-center">
+        <br>
+        <img src="../../assets/images/nodatafound.png" width="80" height="auto" alt=""><br>
+        <h3 class="text-muted">Bloque No Habilitado</h3>
+        <div id="icon">
+          <h5 class="text-muted">El bloque '.$bloque.' aún no ha sido habilitado para ingreso de calificaciones<br>Por favor selecione otro bloque</h5><br>
+        </div>
+        <div class="form-group">
+          <button type="button" class="btn btn-outline-success btn-change" name="button">Selecionar Cuadro</button>
+        </div>
+      </div>
+    </div>');
+  }
+}
+
 ?>

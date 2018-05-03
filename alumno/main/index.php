@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <?php $titulo="Inicio Profesores";
+  <?php $titulo="Inicio Alumnos";
   include '../lib/header.php'; ?>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta content="Sistema para el control de notas escolares" name="description" />
@@ -84,128 +84,47 @@
         <!-- end page title end breadcrumb -->
         <div class="row" >
           <!-- CHAT -->
-          <div class="col-lg-4" style="display:none;">
+          <div class="col-lg-12">
             <div class="card-box">
-              <h4 class="m-t-0 m-b-20 header-title"><b>Registro de Inicio de Sesión</b></h4>
-
-              <div class="chat-conversation" >
-                <ul class="conversation-list c-list nicescroll" >
-
-                  <li class="clearfix ">
-                    <div class="conversation-text ">
-                      <div class="alert alert-success ">
-                        <i class="text-success">Sesión Iniciada</i>
-                        <i class="text-muted">hace 0 segundos</i>
-                        <p>
-                          Inicio de sesión registrado con fecha 06-03-2018 a las 3:50 p.m
-                        </p>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="clearfix ">
-                    <div class="conversation-text">
-                      <div class="alert alert-danger ">
-                        <b><i class="text-danger">Sesión Finalizada</i></b>
-                        <i class="text-muted">hace 0 segundos</i>
-                        <p>
-                          Inicio de sesión registrado con fecha 06-03-2018 a las 3:50 p.m
-                        </p>
-                      </div>
-                    </div>
-                  </li>
-
-                </ul>
-
-              </div>
-            </div>
-
-          </div> <!-- end col-->
-          <div class="col-lg-4">
-            <div class="card-box">
-              <h4 class="m-t-0 m-b-20 header-title"><b>Registro de Notas</b></h4>
-
-              <div class="chat-conversation">
-                <ul class="conversation-list nicescroll" id="classdiv">
-
-                </ul>
-
-              </div>
-            </div>
-
-          </div> <!-- end col-->
-          <div class="col-md-8">
-            <div class="col-lg-12">
-              <div class="card-box">
-                <h4 class="m-t-0 m-b-20 header-title"><b>Listado de Asistencia</b></h4>
+              <h4 class="m-t-0 m-b-20 header-title"><b>Tus Notas</b></h4>
+              <div class="col-md-12">
                 <div class="row">
-                  <div class="col-md-4" >
-                    <select class="form-control select2" id="size" name="">
-                      <option value="v">Vertical</option>
-                      <option value="h">Horizontal</option>
-                    </select>
-                  </div>
-                  <div class="col-md-4" id="divmes">
-                    <select class="form-control select2" id="mes" name="">
+                  <div class="col-12 col-md-4 col-lg-4 ">
+                    <select id="stBloques" class=" form-control select2" name="">
                       <?php
-                      setlocale(LC_ALL, 'es_GT');
-                      date_default_timezone_set("America/Guatemala");
-                      $meses=array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre");
-                      for ($i=1; $i <=12 ; $i++) {
-                        $ma=$i-1;
-                        $mes=date("m")-1;
-                        if ($ma==$mes) {
-                          $s="selected";
-                        }else {
-                          $s="";
-                        }
-                        echo "<option $s value='$i'>".$meses[$ma]."</option>";
-                        $s="";
-                      }
-                      ?>
-                    </select>
-                  </div>
-                  <div class="col-md-4">
-                    <button type='button' class='gen1 add btn btn-simple btn-success btn-icon' data-toggle='modal' data-target='#datos' title='Descargar' ><i class=' mdi mdi-file-pdf  '></i> Descargar Listados</button>
-                  </div>
-                </div>
-
-              </div>
-
-            </div> <!-- end col-->
-            <div class="col-lg-12">
-              <div class="card-box">
-                <h4 class="m-t-0 m-b-20 header-title"><b>Registros de Calificaciones</b></h4>
-                <div class="row">
-                  <div class="col-md-8" >
-                    <select class="form-control select2" id="br" name="">
-                      <?php
-                        for ($i=1; $i <=4 ; $i++) {
+                        for ($i=1; $i <=$bloqueencurso ; $i++) {
                           $s="";
                           if ($i==$bloqueencurso) {
                             $s="selected";
+                          }else {
+                            $s="";
                           }
                           echo '<option '.$s.' value="'.$i.'">Bloque '.$i.'</option>';
                         }
-                       ?>
 
+                       ?>
                     </select>
-                  </div>
-                  <div class="col-md-4">
-                    <button type='button' class='gen2 add btn btn-simple btn-success btn-icon' data-toggle='modal' data-target='#datos' title='Descargar' ><i class=' mdi mdi-file-pdf  '></i> Descargar Registros</button>
                   </div>
                 </div>
 
+                <div class="row">
+                  <div id="main" class="col-md-12">
+                      
+                        
+                  </div>
+                </div>
               </div>
+            </div>
 
-            </div> <!-- end col-->
-          </div>
+          </div> <!-- end col-->
+
 
 
         </div>
       </div> <!-- end container -->
     </div>
     <!-- end wrapper -->
-<iframe id="iframe" src="" style="display:none;" width="100%" height="600px"></iframe>
+
 
     <!-- Footer -->
     <?php
@@ -216,37 +135,15 @@
     <!-- End Footer -->
     <!-- jQuery  -->
     <script type="text/javascript">
-    function asistencia(){
-      var mes=$("#mes").val();
-      var t=$("#size").val();
-        var url="../listados/asistencia.php?m="+mes+"&size="+t;
-        //$.get(url);
-        $("#iframe").attr("src", url);
-
-    }
-    $(".gen1").on('click',function(){
-      asistencia();
-    });
-    function registros(){
-      var bloque=$("#br").val();
-        var url="../listados/?b="+bloque;
-        //$.get(url);
-        $("#iframe").attr("src", url);
-
-    }
-    $(".gen2").on('click',function(){
-      registros();
-    });
-    function cargarmaterias(){
+    function bloques(){
+      var bloque=$('#stBloques').val();
       var parametros = {
-        "idgrado" : "idgrado",
-        "seccion" : "seccion",
-        "idprofe":"idprofe"
+        "b" : bloque,
       };
       $.ajax({
         data:  parametros,
-        url:   'lognotas.php',
-        type:  'POST',
+        url:   'notasbloque.php',
+        type:  'GET',
         beforeSend: function () {
           var load='<div class="">'+
             '<div class="text-center">'+
@@ -258,26 +155,17 @@
               '</div>'+
             '</div>'+
           '</div>';
-          $('#classdiv').html(load);
+          $('#main').html(load);
         },
         success: function (response) {
-          $("#classdiv").html(response);
+          $("#main").html(response);
         }
       });
     }
-    $('body').on("click",".header",function(){
-      $(".wbody").slideUp(500);
-      var wbody=$(this).parent().parent().find(".wbody");
-      if (wbody.is(':visible')) {
-        wbody.slideUp(500);
-      }else {
-        wbody.slideDown(500);
-      }
+    $('#stBloques').change(function(){
+      bloques();
     });
-    $(document).ready(function(){
-      cargarmaterias();
-
-    });
+    bloques();
   </script>
 
 </body>
