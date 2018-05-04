@@ -20,7 +20,7 @@ $act="Sin Asignar";
 if ($resultado) {
   while( $data = mysqli_fetch_array($resultado)){
     $clave=$data['clave'];
-    $idalumno=$
+    $idalumno=$data['idalumno'];
     //$arreglo[] = array_map("utf8_encode",$data);
   }
 }else {

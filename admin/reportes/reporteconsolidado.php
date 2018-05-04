@@ -3,8 +3,8 @@ require('../../assets/fpdf/fpdf.php');
 setlocale(LC_ALL,"es_ES");
 include '../../plugins/datetime.php';
 if (isset($_GET["grado"])) {
-	$rgrado=$_GET["grado"]
-}else {
+	$rgrado=$_GET["grado"];
+} else {
 	$rgrado="";
 }
 if (isset($_GET["seccion"])) {
